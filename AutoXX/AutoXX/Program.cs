@@ -10,6 +10,14 @@ namespace AutoXX
     {
         static void Main(string[] args)
         {
+            var flexPointList = new CoinAnalyze().Analyze("bch", "usdt");
+            foreach(var flexPoint in flexPointList)
+            {
+                Console.WriteLine($"{flexPoint.isHigh}, {flexPoint.open}, {Utils.GetDateById(flexPoint.id)}");
+            }
+
+
+            Console.Read();
         }
     }
 }

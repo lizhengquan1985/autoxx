@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace AutoXX
 {
+    public class FlexPoint
+    {
+        public bool isHigh { get; set; }
+        public decimal open { get; set; }
+        public long id { get; set; }
+    }
     /// <summary>
     /// 分析
     /// 1. 是否是拐点
@@ -17,24 +23,14 @@ namespace AutoXX
     /// </summary>
     public class CoinAnalyze
     {
-        public class ddd
-        {
-            public bool isHigh { get; set; }
-            public decimal open { get; set; }
-            public long id { get; set; }
-        }
 
-        public DateTime getdt(long id)
-        {
-            return new DateTime(id * 10000000 + new DateTime(1970, 1, 1, 8, 0, 0).Ticks);
-        }
 
         /// <summary>
         /// 分析价位走势
         /// </summary>
         /// <param name="coin"></param>
         /// <param name="toCoin"></param>
-        public void Analyze(string coin, string toCoin)
+        public List<FlexPoint> Analyze(string coin, string toCoin)
         {
             int buyPlus = 0;
             int sellPlus = 0;
@@ -43,27 +39,21 @@ namespace AutoXX
 
             try
             {
-                ResponseKline res = new AnaylyzeApi().kline(coin+toCoin, "1min");
+                ResponseKline res = new AnaylyzeApi().kline(coin + toCoin, "1min");
+                Console.WriteLine(Utils.GetDateById(res.data[0].id));
+                Console.WriteLine(Utils.GetDateById(res.data[res.data.Count - 1].id));
 
-                List<ddd> dd = new List<ddd>();
+                List<FlexPoint> flexPointList = new List<FlexPoint>();
 
                 //List<decimal> high = new List<decimal>();
                 //List<decimal> low = new List<decimal>();
-                decimal openHigh = 0;
+                decimal openHigh = res.data[0].open;
+                decimal openLow = res.data[0].open;
                 long idHigh = 0;
-                decimal openLow = 0;
                 long idLow = 0;
+                int lastHighOrLow = 0; // 1 high, -1: low
                 foreach (var item in res.data)
                 {
-                    if (openHigh == 0)
-                    {
-                        openHigh = item.open;
-                    }
-                    if (openLow == 0)
-                    {
-                        openLow = item.open;
-                    }
-
                     if (item.open > openHigh)
                     {
                         openHigh = item.open;
@@ -77,77 +67,95 @@ namespace AutoXX
 
                     if (openHigh >= openLow * (decimal)1.02)
                     {
-                        // 相差了3%， 说明是一个节点了。
-                        if ((dd.Count == 0 && idHigh > idLow) || (dd.Count > 0 && !dd[dd.Count - 1].isHigh))
+                        // 相差了2%， 说明是一个节点了。
+                        if (idHigh > idLow && lastHighOrLow != 1)
                         {
-                            if (dd.Count > 0 && dd[dd.Count - 1].isHigh && dd[dd.Count - 1].open < openHigh)
-                            {
-                                dd[dd.Count - 1].open = openHigh;
-                                dd[dd.Count - 1].id = idHigh;
-                            }
-                            else
-                            {
-                                dd.Add(new ddd() { isHigh = true, open = openHigh, id = idHigh });
-                                openHigh = openLow;
-                                idHigh = idLow;
-                            }
+                            flexPointList.Add(new FlexPoint() { isHigh = true, open = openHigh, id = idHigh });
+                            lastHighOrLow = 1;
+                            openHigh = openLow;
+                            idHigh = idLow;
                         }
-                        else
+                        else if (idHigh < idLow && lastHighOrLow != -1)
                         {
-                            if (dd.Count > 0 && !dd[dd.Count - 1].isHigh && dd[dd.Count - 1].open > openLow)
-                            {
-                                dd[dd.Count - 1].open = openLow;
-                                dd[dd.Count - 1].id = idLow;
-                            }
-                            else
-                            {
-                                dd.Add(new ddd() { isHigh = false, open = openLow, id = idLow });
-                                openLow = openHigh;
-                                idLow = idHigh;
-                            }
+                            flexPointList.Add(new FlexPoint() { isHigh = false, open = openLow, id = idLow });
+                            lastHighOrLow = -1;
+                            openLow = openHigh;
+                            idLow = idHigh;
                         }
                     }
 
+                    //if (openHigh >= openLow * (decimal)1.02)
+                    //{
+                    //    // 相差了2%， 说明是一个节点了。
+                    //    if ((flexPointList.Count == 0 && idHigh > idLow) || (flexPointList.Count > 0 && !flexPointList[flexPointList.Count - 1].isHigh))
+                    //    {
+                    //        if (flexPointList.Count > 0 && flexPointList[flexPointList.Count - 1].isHigh && flexPointList[flexPointList.Count - 1].open < openHigh)
+                    //        {
+                    //            flexPointList[flexPointList.Count - 1].open = openHigh;
+                    //            flexPointList[flexPointList.Count - 1].id = idHigh;
+                    //        }
+                    //        else
+                    //        {
+                    //            flexPointList.Add(new FlexPoint() { isHigh = true, open = openHigh, id = idHigh });
+                    //            openHigh = openLow;
+                    //            idHigh = idLow;
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        if (flexPointList.Count > 0 && !flexPointList[flexPointList.Count - 1].isHigh && flexPointList[flexPointList.Count - 1].open > openLow)
+                    //        {
+                    //            flexPointList[flexPointList.Count - 1].open = openLow;
+                    //            flexPointList[flexPointList.Count - 1].id = idLow;
+                    //        }
+                    //        else
+                    //        {
+                    //            flexPointList.Add(new FlexPoint() { isHigh = false, open = openLow, id = idLow });
+                    //            openLow = openHigh;
+                    //            idLow = idHigh;
+                    //        }
+                    //    }
+                    //}
                 }
 
-                Console.WriteLine(dd.Count);
+                //Console.WriteLine(flexPointList.Count);
 
-                decimal lowGo = 0;
-                decimal highGo = 0;
-                int i = 0;
-                foreach (var item in dd)
-                {
-                    if (i < 8)
-                    {
-                        if (item.isHigh)
-                        {
-                            highGo += item.open;
-                        }
-                        else
-                        {
-                            lowGo += item.open;
-                        }
-                        i++;
-                    }
-                    Console.WriteLine($"{item.isHigh},  {item.open}，  {getdt(item.id)}");
-                }
+                //decimal lowGo = 0;
+                //decimal highGo = 0;
+                //int i = 0;
+                //foreach (var item in flexPointList)
+                //{
+                //    if (i < 8)
+                //    {
+                //        if (item.isHigh)
+                //        {
+                //            highGo += item.open;
+                //        }
+                //        else
+                //        {
+                //            lowGo += item.open;
+                //        }
+                //        i++;
+                //    }
+                //    Console.WriteLine($"{item.isHigh},  {item.open}，  {getdt(item.id)}");
+                //}
 
-                Console.WriteLine(Math.Round(lowGo / 4, 8));
-                Console.WriteLine(Math.Round(highGo / 4, 8));
+                //Console.WriteLine(Math.Round(lowGo / 4, 8));
+                //Console.WriteLine(Math.Round(highGo / 4, 8));
 
                 try
                 {
 
                     //if(buyPlus < sellPlus + 2 && buyPlus < 5) //res.data[0].open <= Math.Round(lowGo / 3, 8) * (decimal) 1.015
                     //{
-                    Console.WriteLine("买入： " + Math.Round(lowGo / 4, 8));
-                    ResponseOrder order = new HuobiDemo().NewOrderBuy(accountId, 10050, Math.Round(lowGo / 4, 8), null);
-                    if (order.status == "ok")
-                    {
-                        Console.WriteLine("buy buy");
-                        buyId = order.data;
-                        buyPlus++;
-                    }
+                    //Console.WriteLine("买入： " + Math.Round(lowGo / 4, 8));
+                    //ResponseOrder order = new HuobiDemo().NewOrderBuy(accountId, 10050, Math.Round(lowGo / 4, 8), null);
+                    //if (order.status == "ok")
+                    //{
+                    //    Console.WriteLine("buy buy");
+                    //    buyId = order.data;
+                    //    buyPlus++;
+                    //}
                     Console.WriteLine("buy buy over");
                     //}
                 }
@@ -178,13 +186,13 @@ namespace AutoXX
                 {
                     Console.WriteLine("sell sell err");
                 }
-
+                return flexPointList;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("1111111111111111111111 over");
             }
-
+            return new List<FlexPoint>();
         }
     }
 }
