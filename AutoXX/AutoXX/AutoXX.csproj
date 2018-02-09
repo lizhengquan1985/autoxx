@@ -67,6 +67,7 @@
     <Compile Include="AnaylyzeApi.cs" />
     <Compile Include="CoinAnalyze.cs" />
     <Compile Include="CoinDao.cs" />
+    <Compile Include="Coin\XEM.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

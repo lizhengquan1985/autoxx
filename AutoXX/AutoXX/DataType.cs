@@ -38,11 +38,31 @@ namespace AutoXX
     public class AccountData
     {
         public string id { get; set; }
+        public string type { get; set; }
+        public string subtype { get; set; }
     }
 
     public class ResponseOrder
     {
         public string status { get; set; }
         public string data { get; set; }
+    }
+
+    public class AccountBalance
+    {
+        public string status { get; set; }
+        public AccountBalanceItem data { get; set; }
+    }
+
+    public class AccountBalanceData
+    {
+        public List<AccountBalanceItem> list { get; set; }
+    }
+
+    public class AccountBalanceItem
+    {
+        public string currency { get; set; }
+        public decimal balance { get; set; }
+        public string type { get; set; }
     }
 }

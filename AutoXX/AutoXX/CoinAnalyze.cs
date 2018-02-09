@@ -30,12 +30,15 @@ namespace AutoXX
         /// </summary>
         /// <param name="coin"></param>
         /// <param name="toCoin"></param>
-        public List<FlexPoint> Analyze(string coin, string toCoin)
+        public List<FlexPoint> Analyze(string coin, string toCoin, out decimal lastLow, out decimal nowOpen)
         {
             int buyPlus = 0;
             int sellPlus = 0;
             string buyId = null;
             string sellId = null;
+
+            nowOpen = 0;
+            lastLow = 999999999;
 
             try
             {
@@ -43,6 +46,8 @@ namespace AutoXX
                 Console.WriteLine($"总数：{res.data.Count}");
                 Console.WriteLine(Utils.GetDateById(res.data[0].id));
                 Console.WriteLine(Utils.GetDateById(res.data[res.data.Count - 1].id));
+
+                nowOpen = res.data[0].open;
 
                 List<FlexPoint> flexPointList = new List<FlexPoint>();
 
@@ -84,7 +89,8 @@ namespace AutoXX
                             lastHighOrLow = -1;
                             openLow = openHigh;
                             idLow = idHigh;
-                        }else if(lastHighOrLow == 1)
+                        }
+                        else if (lastHighOrLow == 1)
                         {
 
                         }
@@ -124,6 +130,18 @@ namespace AutoXX
                     //        }
                     //    }
                     //}
+                }
+
+                if (flexPointList[0].isHigh)
+                {
+                    // 
+                    foreach (var item in res.data)
+                    {
+                        if(item.id < flexPointList[0].id && lastLow> item.open)
+                        {
+                            lastLow = item.open;
+                        }
+                    }
                 }
 
                 //Console.WriteLine(flexPointList.Count);
@@ -201,6 +219,51 @@ namespace AutoXX
                 Console.WriteLine("1111111111111111111111 over");
             }
             return new List<FlexPoint>();
+        }
+
+        public decimal AnalyzeNeedSell(decimal comparePrice, DateTime compareDate, string coin, string toCoin, out decimal nowOpen)
+        {
+
+            nowOpen = 0;
+
+            decimal lower = new decimal(9999999);
+
+            try
+            {
+                ResponseKline res = new AnaylyzeApi().kline(coin + toCoin, "1min", 1440);
+                Console.WriteLine($"总数：{res.data.Count}");
+                Console.WriteLine(Utils.GetDateById(res.data[0].id));
+                Console.WriteLine(Utils.GetDateById(res.data[res.data.Count - 1].id));
+
+                nowOpen = res.data[0].open;
+
+                List<FlexPoint> flexPointList = new List<FlexPoint>();
+
+                //List<decimal> high = new List<decimal>();
+                //List<decimal> low = new List<decimal>();
+                decimal openHigh = res.data[0].open;
+                decimal openLow = res.data[0].open;
+                long idHigh = 0;
+                long idLow = 0;
+                int lastHighOrLow = 0; // 1 high, -1: low
+                foreach (var item in res.data)
+                {
+                    if(Utils.GetDateById(item.id) < compareDate)
+                    {
+                        continue;
+                    }
+
+                     if(item.open < lower)
+                    {
+                        lower = item.open;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("1111111111111111111111 over");
+            }
+            return lower;
         }
     }
 }
