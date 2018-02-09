@@ -39,7 +39,8 @@ namespace AutoXX
 
             try
             {
-                ResponseKline res = new AnaylyzeApi().kline(coin + toCoin, "1min");
+                ResponseKline res = new AnaylyzeApi().kline(coin + toCoin, "1min", 1440);
+                Console.WriteLine($"总数：{res.data.Count}");
                 Console.WriteLine(Utils.GetDateById(res.data[0].id));
                 Console.WriteLine(Utils.GetDateById(res.data[res.data.Count - 1].id));
 
@@ -67,6 +68,8 @@ namespace AutoXX
 
                     if (openHigh >= openLow * (decimal)1.02)
                     {
+                        var dtHigh = Utils.GetDateById(idHigh);
+                        var dtLow = Utils.GetDateById(idLow);
                         // 相差了2%， 说明是一个节点了。
                         if (idHigh > idLow && lastHighOrLow != 1)
                         {
@@ -81,7 +84,12 @@ namespace AutoXX
                             lastHighOrLow = -1;
                             openLow = openHigh;
                             idLow = idHigh;
+                        }else if(lastHighOrLow == 1)
+                        {
+
                         }
+                        //Console.WriteLine($"{dtHigh}, {openHigh}");
+                        //Console.WriteLine($"{dtLow}, {openLow}");
                     }
 
                     //if (openHigh >= openLow * (decimal)1.02)

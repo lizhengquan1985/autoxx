@@ -18,7 +18,7 @@ namespace AutoXX
         public ResponseKline kline(string symbol, string period, int size = 300)
         {
             var url = $"{baseUrl}/history/kline";
-            url += $"?symbol={symbol}&period={period}&size=300";
+            url += $"?symbol={symbol}&period={period}&size={size}";
 
             int httpCode = 0;
             var result = RequestDataSync(url, "GET", null, null, out httpCode);

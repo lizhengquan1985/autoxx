@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using SharpDapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,14 +12,29 @@ namespace AutoXX
     {
         static void Main(string[] args)
         {
-            var flexPointList = new CoinAnalyze().Analyze("bch", "usdt");
-            foreach(var flexPoint in flexPointList)
+            new CoinDao().InsertLog(new BuyRecord()
             {
-                Console.WriteLine($"{flexPoint.isHigh}, {flexPoint.open}, {Utils.GetDateById(flexPoint.id)}");
+                 BuyCoin ="ltc",
+                 BuyPrice = new decimal(1.1),
+                  BuyDate = DateTime.Now,
+                   HasSell = false,
+            });
+
+            var list = new CoinDao().ListNoSellRecord("ltc");
+            Console.WriteLine(list.Count);
+            new CoinDao().SetHasSell(1);
+
+            while (true)
+            {
+                Console.WriteLine("请输入：");
+                var coin = Console.ReadLine();
+
+                var flexPointList = new CoinAnalyze().Analyze(coin, "usdt");
+                foreach (var flexPoint in flexPointList)
+                {
+                    Console.WriteLine($"{flexPoint.isHigh}, {flexPoint.open}, {Utils.GetDateById(flexPoint.id)}");
+                }
             }
-
-
-            Console.Read();
         }
     }
 }
