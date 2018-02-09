@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutoXX
 {
+    /// <summary>
+    /// K线
+    /// </summary>
     public class ResponseKline
     {
         public string status { get; set; }
