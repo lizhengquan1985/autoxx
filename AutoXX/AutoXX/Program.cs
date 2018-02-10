@@ -88,7 +88,9 @@ namespace AutoXX
                     GNT.Do();
                     CVC.Do();
                     VEN.Do();
-
+                    IOST.Do();
+                    XRP.Do();
+                    NEO.Do();
                 }
                 catch (Exception ex)
                 {

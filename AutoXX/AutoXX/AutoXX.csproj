@@ -73,13 +73,16 @@
     <Compile Include="Coin\ELF.cs" />
     <Compile Include="Coin\GNT.cs" />
     <Compile Include="Coin\HT.cs" />
+    <Compile Include="Coin\IOST.cs" />
     <Compile Include="Coin\LET.cs" />
+    <Compile Include="Coin\NEO.cs" />
     <Compile Include="Coin\SMT.cs" />
     <Compile Include="Coin\SNT.cs" />
     <Compile Include="Coin\STORJ.cs" />
     <Compile Include="Coin\THETA.cs" />
     <Compile Include="Coin\VEN.cs" />
     <Compile Include="Coin\XEM.cs" />
+    <Compile Include="Coin\XRP.cs" />
     <Compile Include="Coin\ZIL.cs" />
     <Compile Include="DataType.cs" />
     <Compile Include="Program.cs" />
