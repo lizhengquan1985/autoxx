@@ -14,6 +14,14 @@ namespace AutoXX
     {
         static void Main(string[] args)
         {
+            Test();
+
+
+            Run();
+        }
+
+        public static void Test()
+        {
             //new CoinDao().InsertLog(new BuyRecord()
             //{
             //     BuyCoin ="ltc",
@@ -50,7 +58,10 @@ namespace AutoXX
             //        Console.WriteLine($"{flexPoint.isHigh}, {flexPoint.open}, {Utils.GetDateById(flexPoint.id)}");
             //    }
             //}
+        }
 
+        public static void Run()
+        {
             while (true)
             {
                 Thread.Sleep(1000 * 10);
@@ -72,7 +83,7 @@ namespace AutoXX
                     CVC.Do();
 
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
