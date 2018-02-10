@@ -10,7 +10,7 @@ namespace AutoXX.Coin
     {
         public static string coin = "storj";
         public static decimal buyAmount = (decimal)4;
-        public static decimal sellAmount = (decimal)3.8;
+        public static decimal sellAmount = (decimal)3.92;
 
         public static void Do()
         {

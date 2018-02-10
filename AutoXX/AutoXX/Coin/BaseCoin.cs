@@ -23,6 +23,7 @@ namespace AutoXX.Coin
 
         public static bool CheckCanSell(decimal buyPrice, decimal nearHigherOpen, decimal nowOpen)
         {
+            //item.BuyPrice, higher, itemNowOpen
             // if (item.BuyPrice * (decimal)1.05 < higher && itemNowOpen * (decimal)1.005 < higher)
             if (nowOpen < buyPrice * (decimal)1.03)
             {
@@ -30,7 +31,7 @@ namespace AutoXX.Coin
                 return false;
             }
 
-            if (nearHigherOpen * (decimal)1.005 < nearHigherOpen)
+            if (nowOpen * (decimal)1.005 < nearHigherOpen)
             {
                 // 表示回头趋势， 暂时定为 0.5% 就有回头趋势
                 return true;
@@ -59,8 +60,16 @@ namespace AutoXX.Coin
             decimal lastLow;
             decimal nowOpen;
             var flexPointList = new CoinAnalyze().Analyze(coin, "usdt", out lastLow, out nowOpen);
+            if(coin == "xem")
+            {
+                //logger.Error(JsonConvert.SerializeObject(flexPointList));
+            }
             // 分析是否下跌， 下跌超过一定数据，可以考虑
             var list = new CoinDao().ListNoSellRecord(coin);
+            if (coin == "xem")
+            {
+                //logger.Error(JsonConvert.SerializeObject(list));
+            }
             if (!flexPointList[0].isHigh)
             {
                 // 最后一次是高位
@@ -69,6 +78,7 @@ namespace AutoXX.Coin
                     // 可以考虑
                     ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
                     logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
+                    logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                     if (order.status != "error")
                     {
                         new CoinDao().InsertLog(new BuyRecord()
@@ -100,6 +110,7 @@ namespace AutoXX.Coin
                     {
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
                         logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
+                        logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         if (order.status != "error")
                         {
                             new CoinDao().InsertLog(new BuyRecord()
@@ -124,12 +135,17 @@ namespace AutoXX.Coin
                     // 分析是否 大于
                     decimal itemNowOpen = 0;
                     decimal higher = new CoinAnalyze().AnalyzeNeedSell(item.BuyPrice, item.BuyDate, coin, "usdt", out itemNowOpen);
+                    if (coin == "xem")
+                    {
+                        //logger.Error($"计算 {higher}, {itemNowOpen} {item.BuyPrice}");
+                    }
 
                     if (CheckCanSell(item.BuyPrice, higher, itemNowOpen))
                     {
                         // 出售
                         ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, decimal.Round(itemNowOpen * (decimal)0.98, 4), null, coin, "usdt");
                         logger.Error($"出售结果 coin{coin} accountId:{accountId}  出售数量{sellAmount} itemNowOpen{itemNowOpen} higher{higher} {JsonConvert.SerializeObject(order)}");
+                        logger.Error($"出售结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         new CoinDao().SetHasSell(item.Id, JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(flexPointList));
                     }
                 }
