@@ -62,6 +62,15 @@ namespace AutoXX
                     DTA.Do();
                     VEN.Do();
                     ELF.Do();
+                    ZIL.Do();
+                    LET.Do();
+                    HT.Do();
+                    THETA.Do();
+                    SNT.Do();
+                    STORJ.Do();
+                    GNT.Do();
+                    CVC.Do();
+
                 }
                 catch(Exception ex)
                 {
