@@ -14,8 +14,6 @@ namespace AutoXX
 {
     public class AccountOrder
     {
-        private string accessKey = "";
-        private string secretKey = "";
 
         private const string domain = "api.huobi.pro";// "be.huobi.com";
         private string baseUrl = $"https://{domain}";
@@ -47,7 +45,7 @@ namespace AutoXX
 
         private string GetDateTime() => DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss");
 
-        public string AccountBalance(string accountId)
+        public AccountBalance AccountBalance(string accountId)
         {
             var action = $"/v1/account/accounts/{accountId}/balance";
             var method = "GET";
@@ -65,7 +63,7 @@ namespace AutoXX
             int statusCode;
             var result = RequestDataSync(url, method, null, null, out statusCode);
             Debug.WriteLine(result);
-            return result;
+            return JsonConvert.DeserializeObject<AccountBalance>(result);
         }
 
         public string NewOrder(string accountId, decimal amount, decimal price, string type)
@@ -105,7 +103,7 @@ namespace AutoXX
         /// <param name="price"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public ResponseOrder NewOrderBuy(string accountId, decimal amount, decimal price, string type)
+        public ResponseOrder NewOrderBuy(string accountId, decimal amount, decimal price, string type, string coin, string toCoin)
         {
             var action = $"/v1/order/orders/place";
             var method = "POST";
@@ -124,7 +122,7 @@ namespace AutoXX
                 {"account-id", accountId},
                 {"amount", amount},
                 {"price", price},
-                {"symbol", "bcxbtc"},
+                {"symbol", $"{coin}{toCoin}"},
                 {"type", "buy-limit"}
             };
             var url = $"{baseUrl}{action}?{ConvertQueryString(data, true)}";
@@ -135,7 +133,7 @@ namespace AutoXX
             return JsonConvert.DeserializeObject<ResponseOrder>(result);
         }
 
-        public ResponseOrder NewOrderSell(string accountId, decimal amount, decimal price, string type)
+        public ResponseOrder NewOrderSell(string accountId, decimal amount, decimal price, string type, string coin, string toCoin)
         {
             var action = $"/v1/order/orders/place";
             var method = "POST";
@@ -154,7 +152,7 @@ namespace AutoXX
                 {"account-id", accountId},
                 {"amount", amount},
                 {"price", price},
-                {"symbol", "bcxbtc"},
+                {"symbol", $"{coin}{toCoin}"},
                 {"type", "sell-limit"}
             };
             var url = $"{baseUrl}{action}?{ConvertQueryString(data, true)}";
