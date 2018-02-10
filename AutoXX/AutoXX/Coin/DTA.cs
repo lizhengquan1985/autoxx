@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class DTA : BaseCoin
     {
         public static string coin = "dta";
-        public static decimal buyAmount = (decimal)10;
-        public static decimal sellAmount = (decimal)9.8;
+        public static decimal buyAmount = (decimal)50;
+        public static decimal sellAmount = (decimal)49;
 
         public static void Do()
         {
