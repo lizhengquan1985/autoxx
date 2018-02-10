@@ -65,15 +65,18 @@ namespace AutoXX.Coin
                 {
                     // 可以考虑
                     ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
-                    new CoinDao().InsertLog(new BuyRecord()
+                    if(order.status != "error")
                     {
-                        BuyCoin = coin,
-                        BuyPrice = nowOpen * (decimal)1.005,
-                        BuyDate = DateTime.Now,
-                        HasSell = false,
-                        BuyOrderResult = JsonConvert.SerializeObject(order),
-                        BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
-                    });
+                        new CoinDao().InsertLog(new BuyRecord()
+                        {
+                            BuyCoin = coin,
+                            BuyPrice = nowOpen * (decimal)1.005,
+                            BuyDate = DateTime.Now,
+                            HasSell = false,
+                            BuyOrderResult = JsonConvert.SerializeObject(order),
+                            BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
+                        });
+                    }
                 }
 
                 if (list.Count > 0)
@@ -92,15 +95,18 @@ namespace AutoXX.Coin
                     if (nowOpen * (decimal)1.05 < minBuyPrice)
                     {
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
-                        new CoinDao().InsertLog(new BuyRecord()
+                        if (order.status != "error")
                         {
-                            BuyCoin = coin,
-                            BuyPrice = nowOpen * (decimal)1.005,
-                            BuyDate = DateTime.Now,
-                            HasSell = false,
-                            BuyOrderResult = JsonConvert.SerializeObject(order),
-                            BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
-                        });
+                            new CoinDao().InsertLog(new BuyRecord()
+                            {
+                                BuyCoin = coin,
+                                BuyPrice = nowOpen * (decimal)1.005,
+                                BuyDate = DateTime.Now,
+                                HasSell = false,
+                                BuyOrderResult = JsonConvert.SerializeObject(order),
+                                BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
+                            });
+                        }
                     }
                 }
             }
