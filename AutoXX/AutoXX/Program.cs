@@ -60,6 +60,8 @@ namespace AutoXX
                     XEM.Do();
                     SMT.Do();
                     DTA.Do();
+                    VEN.Do();
+                    ELF.Do();
                 }
                 catch(Exception ex)
                 {
