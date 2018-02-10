@@ -22,6 +22,15 @@ namespace AutoXX
 
         public void InsertLog(BuyRecord buyRecord)
         {
+            if (buyRecord.BuyAnalyze.Length > 4000)
+            {
+                buyRecord.BuyAnalyze = buyRecord.BuyAnalyze.Substring(0, 4000);
+            }
+            if (buyRecord.BuyOrderResult.Length > 500)
+            {
+                buyRecord.BuyOrderResult = buyRecord.BuyOrderResult.Substring(0, 500);
+            }
+
             using (var tx = Database.BeginTransaction())
             {
                 Database.Insert(buyRecord);
@@ -35,11 +44,20 @@ namespace AutoXX
             return Database.Query<BuyRecord>(sql).ToList();
         }
 
-        public void SetHasSell(long id)
+        public void SetHasSell(long id, string sellOrderResult, string sellAnalyze)
         {
+            if(sellAnalyze.Length > 4000)
+            {
+                sellAnalyze = sellAnalyze.Substring(0, 4000);
+            }
+            if (sellOrderResult.Length > 500)
+            {
+                sellOrderResult = sellOrderResult.Substring(0, 500);
+            }
+
             using (var tx = Database.BeginTransaction())
             {
-                var sql = $"update t_buy_record set HasSell=1 where Id = {id}";
+                var sql = $"update t_buy_record set HasSell=1, SellAnalyze='{sellAnalyze}', SellOrderResult='{sellOrderResult}' where Id = {id}";
                 Database.Execute(sql);
                 tx.Commit();
             }
@@ -54,5 +72,10 @@ namespace AutoXX
         public decimal BuyPrice { get; set; }
         public DateTime BuyDate { get; set; }
         public bool HasSell { get; set; }
+
+        public string BuyAnalyze { get; set; }
+        public string SellAnalyze { get; set; }
+        public string BuyOrderResult { get; set; }
+        public string SellOrderResult { get; set; }
     }
 }

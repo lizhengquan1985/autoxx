@@ -223,7 +223,7 @@ namespace AutoXX
 
         public decimal AnalyzeNeedSell(decimal comparePrice, DateTime compareDate, string coin, string toCoin, out decimal nowOpen)
         {
-
+            // 当前open
             nowOpen = 0;
 
             decimal higher = new decimal(0);
@@ -231,16 +231,11 @@ namespace AutoXX
             try
             {
                 ResponseKline res = new AnaylyzeApi().kline(coin + toCoin, "1min", 1440);
-                Console.WriteLine($"总数：{res.data.Count}");
-                Console.WriteLine(Utils.GetDateById(res.data[0].id));
-                Console.WriteLine(Utils.GetDateById(res.data[res.data.Count - 1].id));
 
                 nowOpen = res.data[0].open;
 
                 List<FlexPoint> flexPointList = new List<FlexPoint>();
 
-                //List<decimal> high = new List<decimal>();
-                //List<decimal> low = new List<decimal>();
                 decimal openHigh = res.data[0].open;
                 decimal openLow = res.data[0].open;
                 long idHigh = 0;

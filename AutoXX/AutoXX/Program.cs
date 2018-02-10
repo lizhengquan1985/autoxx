@@ -14,7 +14,7 @@ namespace AutoXX
     {
         static void Main(string[] args)
         {
-            Test();
+            //Test();
 
 
             Run();
@@ -34,8 +34,8 @@ namespace AutoXX
             //Console.WriteLine(list.Count);
             //new CoinDao().SetHasSell(1);
 
-            //var res = new AccountOrder().Accounts();
-            //Console.WriteLine(res);
+            var res = new AccountOrder().Accounts();
+            Console.WriteLine(res);
             //Console.WriteLine(res.data.Count);
             //while (true)
             //{
@@ -45,19 +45,19 @@ namespace AutoXX
             //    Console.WriteLine(b);
             //}
 
-            //while (true)
-            //{
-            //    Console.WriteLine("请输入：");
-            //    var coin = Console.ReadLine();
+            while (true)
+            {
+                Console.WriteLine("请输入：");
+                var coin = Console.ReadLine();
 
-            //    decimal lastLow;
-            //    decimal nowOpen;
-            //    var flexPointList = new CoinAnalyze().Analyze(coin, "usdt", out lastLow, out nowOpen);
-            //    foreach (var flexPoint in flexPointList)
-            //    {
-            //        Console.WriteLine($"{flexPoint.isHigh}, {flexPoint.open}, {Utils.GetDateById(flexPoint.id)}");
-            //    }
-            //}
+                decimal lastLow;
+                decimal nowOpen;
+                var flexPointList = new CoinAnalyze().Analyze(coin, "usdt", out lastLow, out nowOpen);
+                foreach (var flexPoint in flexPointList)
+                {
+                    Console.WriteLine($"{flexPoint.isHigh}, {flexPoint.open}, {Utils.GetDateById(flexPoint.id)}");
+                }
+            }
         }
 
         public static void Run()
@@ -71,7 +71,6 @@ namespace AutoXX
                     XEM.Do();
                     SMT.Do();
                     DTA.Do();
-                    VEN.Do();
                     ELF.Do();
                     ZIL.Do();
                     LET.Do();
@@ -81,6 +80,7 @@ namespace AutoXX
                     STORJ.Do();
                     GNT.Do();
                     CVC.Do();
+                    VEN.Do();
 
                 }
                 catch (Exception ex)

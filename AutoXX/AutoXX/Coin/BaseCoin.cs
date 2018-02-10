@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,8 @@ namespace AutoXX.Coin
 {
     public class BaseCoin
     {
-        public static string accountId = "1040955";
+        public static string accountId = "1040955"; // yanxiuq
+        //public static string accountId = "529880";  // lizhengq
 
         public static bool CheckCanBuy(decimal nowOpen, decimal nearLowOpen)
         {
@@ -57,7 +59,37 @@ namespace AutoXX.Coin
                         BuyPrice = nowOpen * (decimal)1.005,
                         BuyDate = DateTime.Now,
                         HasSell = false,
+                        BuyOrderResult = JsonConvert.SerializeObject(order),
+                        BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
                     });
+                }
+
+                if(list.Count > 0)
+                {
+                    // 获取最小的那个， 如果有，
+                    decimal minBuyPrice = 9999;
+                    foreach(var item in list)
+                    {
+                        if(item.BuyPrice < minBuyPrice)
+                        {
+                            minBuyPrice = item.BuyPrice;
+                        }
+                    }
+
+                    // 再少于5%， 
+                    if(nowOpen * (decimal)1.05 < minBuyPrice)
+                    {
+                        ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
+                        new CoinDao().InsertLog(new BuyRecord()
+                        {
+                            BuyCoin = coin,
+                            BuyPrice = nowOpen * (decimal)1.005,
+                            BuyDate = DateTime.Now,
+                            HasSell = false,
+                            BuyOrderResult = JsonConvert.SerializeObject(order),
+                            BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
+                        });
+                    }
                 }
             }
 
@@ -74,7 +106,7 @@ namespace AutoXX.Coin
                     {
                         // 出售
                         ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, decimal.Round(itemNowOpen * (decimal)0.98, 4), null, coin, "usdt");
-                        new CoinDao().SetHasSell(item.Id);
+                        new CoinDao().SetHasSell(item.Id, JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(flexPointList));
                     }
                 }
             }
