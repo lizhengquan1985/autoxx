@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace AutoXX.Coin
 {
     public class BaseCoin
     {
+        static ILog logger = LogManager.GetLogger("BaseCoin");
+
         public static string accountId = "1040955"; // yanxiuq
         //public static string accountId = "529880";  // lizhengq
 
@@ -46,7 +49,7 @@ namespace AutoXX.Coin
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                logger.Error(ex.Message, ex);
             }
         }
 
@@ -65,7 +68,8 @@ namespace AutoXX.Coin
                 {
                     // 可以考虑
                     ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
-                    if(order.status != "error")
+                    logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
+                    if (order.status != "error")
                     {
                         new CoinDao().InsertLog(new BuyRecord()
                         {
@@ -95,6 +99,7 @@ namespace AutoXX.Coin
                     if (nowOpen * (decimal)1.05 < minBuyPrice)
                     {
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
+                        logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
                         if (order.status != "error")
                         {
                             new CoinDao().InsertLog(new BuyRecord()
@@ -124,6 +129,7 @@ namespace AutoXX.Coin
                     {
                         // 出售
                         ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, decimal.Round(itemNowOpen * (decimal)0.98, 4), null, coin, "usdt");
+                        logger.Error($"出售结果 coin{coin} accountId:{accountId}  出售数量{sellAmount} itemNowOpen{itemNowOpen} higher{higher} {JsonConvert.SerializeObject(order)}");
                         new CoinDao().SetHasSell(item.Id, JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(flexPointList));
                     }
                 }

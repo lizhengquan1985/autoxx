@@ -1,8 +1,11 @@
 ﻿using AutoXX.Coin;
+using log4net;
+using log4net.Config;
 using MySql.Data.MySqlClient;
 using SharpDapper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,6 +17,10 @@ namespace AutoXX
     {
         static void Main(string[] args)
         {
+            XmlConfigurator.Configure(new FileInfo("log4net.config"));
+            ILog logger = LogManager.GetLogger("program");
+            logger.Error("test test test");
+
             //Test();
 
 
@@ -64,7 +71,7 @@ namespace AutoXX
         {
             while (true)
             {
-                Thread.Sleep(1000 * 15);
+                Thread.Sleep(1000 * 20);
 
                 try
                 {
