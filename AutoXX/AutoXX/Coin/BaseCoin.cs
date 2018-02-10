@@ -27,7 +27,7 @@ namespace AutoXX.Coin
                 return false;
             }
 
-            if(nearHigherOpen * (decimal)1.005 < nearHigherOpen)
+            if (nearHigherOpen * (decimal)1.005 < nearHigherOpen)
             {
                 // 表示回头趋势， 暂时定为 0.5% 就有回头趋势
                 return true;
@@ -39,6 +39,18 @@ namespace AutoXX.Coin
 
 
         public static void BaseRun(string coin, decimal buyAmount, decimal sellAmount)
+        {
+            try
+            {
+                BusinessRun(coin, buyAmount, sellAmount);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public static void BusinessRun(string coin, decimal buyAmount, decimal sellAmount)
         {
             // 获取最近行情
             decimal lastLow;
@@ -64,20 +76,20 @@ namespace AutoXX.Coin
                     });
                 }
 
-                if(list.Count > 0)
+                if (list.Count > 0)
                 {
                     // 获取最小的那个， 如果有，
                     decimal minBuyPrice = 9999;
-                    foreach(var item in list)
+                    foreach (var item in list)
                     {
-                        if(item.BuyPrice < minBuyPrice)
+                        if (item.BuyPrice < minBuyPrice)
                         {
                             minBuyPrice = item.BuyPrice;
                         }
                     }
 
                     // 再少于5%， 
-                    if(nowOpen * (decimal)1.05 < minBuyPrice)
+                    if (nowOpen * (decimal)1.05 < minBuyPrice)
                     {
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
                         new CoinDao().InsertLog(new BuyRecord()

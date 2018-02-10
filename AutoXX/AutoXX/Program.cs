@@ -64,7 +64,7 @@ namespace AutoXX
         {
             while (true)
             {
-                Thread.Sleep(1000 * 10);
+                Thread.Sleep(1000 * 15);
 
                 try
                 {
