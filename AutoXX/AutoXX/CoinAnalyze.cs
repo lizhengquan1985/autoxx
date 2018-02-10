@@ -71,7 +71,7 @@ namespace AutoXX
                         idLow = item.id;
                     }
 
-                    if (openHigh >= openLow * (decimal)1.02)
+                    if (openHigh >= openLow * (decimal)1.025)
                     {
                         var dtHigh = Utils.GetDateById(idHigh);
                         var dtLow = Utils.GetDateById(idLow);
@@ -226,7 +226,7 @@ namespace AutoXX
 
             nowOpen = 0;
 
-            decimal lower = new decimal(9999999);
+            decimal higher = new decimal(0);
 
             try
             {
@@ -253,9 +253,9 @@ namespace AutoXX
                         continue;
                     }
 
-                     if(item.open < lower)
+                     if(item.open > higher)
                     {
-                        lower = item.open;
+                        higher = item.open;
                     }
                 }
             }
@@ -263,7 +263,7 @@ namespace AutoXX
             {
                 Console.WriteLine("1111111111111111111111 over");
             }
-            return lower;
+            return higher;
         }
     }
 }

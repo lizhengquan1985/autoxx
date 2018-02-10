@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace AutoXX.Coin
 {
-    public class XEM
+    public class SMT
     {
         public static void Do()
         {
             // 获取最近行情
             string accountId = "1040955";
+            string coin = "smt";
             decimal lastLow;
             decimal nowOpen;
-            var flexPointList = new CoinAnalyze().Analyze("xem", "usdt", out lastLow, out nowOpen);
+            var flexPointList = new CoinAnalyze().Analyze(coin, "usdt", out lastLow, out nowOpen);
             // 分析是否下跌， 下跌超过一定数据，可以考虑
             Console.WriteLine(flexPointList[0].isHigh);
-            var list = new CoinDao().ListNoSellRecord("xem");
+            var list = new CoinDao().ListNoSellRecord(coin);
             if (!flexPointList[0].isHigh)
             {
                 // 最后一次是高位
@@ -28,10 +29,10 @@ namespace AutoXX.Coin
                     if (list.Count <= 0)
                     {
                         // 可以考虑
-                        ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, 10, decimal.Round(nowOpen * (decimal)1.005, 4), null, "xem", "usdt");
+                        ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, 10, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
                         new CoinDao().InsertLog(new BuyRecord()
                         {
-                            BuyCoin = "xem",
+                            BuyCoin = coin,
                             BuyPrice = nowOpen * (decimal)1.005,
                             BuyDate = DateTime.Now,
                             HasSell = false,
@@ -46,11 +47,11 @@ namespace AutoXX.Coin
                 {
                     // 分析是否 大于
                     decimal itemNowOpen = 0;
-                    decimal higher = new CoinAnalyze().AnalyzeNeedSell(item.BuyPrice, item.BuyDate, "xem", "usdt", out itemNowOpen);
+                    decimal higher = new CoinAnalyze().AnalyzeNeedSell(item.BuyPrice, item.BuyDate, coin, "usdt", out itemNowOpen);
                     if (item.BuyPrice * (decimal)1.05 < higher && itemNowOpen * (decimal)1.005 < higher)
                     {
                         // 出售
-                        ResponseOrder order = new AccountOrder().NewOrderSell(accountId, (decimal)9.8, decimal.Round(itemNowOpen * (decimal)0.98, 4), null, "xem", "usdt");
+                        ResponseOrder order = new AccountOrder().NewOrderSell(accountId, (decimal)9.8, decimal.Round(itemNowOpen * (decimal)0.98, 4), null, coin, "usdt");
                         new CoinDao().SetHasSell(item.Id);
                     }
                 }

@@ -58,6 +58,8 @@ namespace AutoXX
                 try
                 {
                     XEM.Do();
+                    SMT.Do();
+                    DTA.Do();
                 }
                 catch(Exception ex)
                 {
