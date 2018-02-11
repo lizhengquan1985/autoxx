@@ -22,8 +22,11 @@ namespace AutoXX
             ILog logger = LogManager.GetLogger("program");
             logger.Error("-------------------------- 软件启动 ---------------------------------");
 
-            AccountConfig.init("yxq");
+            AccountConfig.init("lzq");
 
+            Console.WriteLine($"{AccountConfig.mainAccountId}， {AccountConfig.accessKey}， {AccountConfig.secretKey}， {AccountConfig.sqlConfig}");
+
+            Console.Read();
             //Test();
 
 
@@ -93,7 +96,8 @@ namespace AutoXX
                     STORJ.Do();
                     GNT.Do();
                     CVC.Do();
-                    //VEN.Do();
+                    RUFF.Do();
+                    VEN.Do();
                     IOST.Do();
                     XRP.Do();
                     //NEO.Do();

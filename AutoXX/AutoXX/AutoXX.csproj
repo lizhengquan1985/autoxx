@@ -77,6 +77,7 @@
     <Compile Include="Coin\IOST.cs" />
     <Compile Include="Coin\LET.cs" />
     <Compile Include="Coin\NEO.cs" />
+    <Compile Include="Coin\RUFF.cs" />
     <Compile Include="Coin\SMT.cs" />
     <Compile Include="Coin\SNT.cs" />
     <Compile Include="Coin\STORJ.cs" />
