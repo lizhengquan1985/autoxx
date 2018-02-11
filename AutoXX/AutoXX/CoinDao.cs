@@ -44,7 +44,7 @@ namespace AutoXX
             return Database.Query<BuyRecord>(sql).ToList();
         }
 
-        public void SetHasSell(long id, string sellOrderResult, string sellAnalyze)
+        public void SetHasSell(long id, decimal sellAmount, string sellOrderResult, string sellAnalyze)
         {
             if (sellAnalyze.Length > 4000)
             {
@@ -57,7 +57,7 @@ namespace AutoXX
 
             using (var tx = Database.BeginTransaction())
             {
-                var sql = $"update t_buy_record set HasSell=1, SellAnalyze='{sellAnalyze}', SellOrderResult='{sellOrderResult}' where Id = {id}";
+                var sql = $"update t_buy_record set HasSell=1, SellAmount={sellAmount}, SellDate=now(), SellAnalyze='{sellAnalyze}', SellOrderResult='{sellOrderResult}' where Id = {id}";
                 Database.Execute(sql);
                 tx.Commit();
             }
@@ -77,5 +77,9 @@ namespace AutoXX
         public string SellAnalyze { get; set; }
         public string BuyOrderResult { get; set; }
         public string SellOrderResult { get; set; }
+
+        public DateTime SellDate { get; set; }
+        public decimal SellAmount { get; set; }
+        public decimal BuyAmount { get; set; }
     }
 }
