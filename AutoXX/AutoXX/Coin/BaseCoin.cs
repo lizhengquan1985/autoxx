@@ -86,10 +86,10 @@ namespace AutoXX.Coin
             {
                 //logger.Error(JsonConvert.SerializeObject(list));
             }
-            if (!flexPointList[0].isHigh)
+            if (!flexPointList[0].isHigh && CheckBalance())
             {
                 // 最后一次是高位
-                if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open) && CheckBalance())
+                if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open))
                 {
                     // 可以考虑
                     ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
@@ -123,7 +123,7 @@ namespace AutoXX.Coin
                     }
 
                     // 再少于5%， 
-                    if (nowOpen * (decimal)1.05 < minBuyPrice && CheckBalance())
+                    if (nowOpen * (decimal)1.05 < minBuyPrice)
                     {
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
                         logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
