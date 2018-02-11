@@ -87,10 +87,10 @@ namespace AutoXX
                     STORJ.Do();
                     GNT.Do();
                     CVC.Do();
-                    VEN.Do();
+                    //VEN.Do();
                     IOST.Do();
                     XRP.Do();
-                    NEO.Do();
+                    //NEO.Do();
                 }
                 catch (Exception ex)
                 {
