@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountConfig.cs" />
     <Compile Include="AccountOrder.cs" />
     <Compile Include="AnaylyzeApi.cs" />
     <Compile Include="CoinAnalyze.cs" />

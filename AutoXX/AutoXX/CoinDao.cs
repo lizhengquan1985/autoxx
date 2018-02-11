@@ -13,7 +13,7 @@ namespace AutoXX
     {
         public CoinDao()
         {
-            string connectionString = "server=localhost;port=3306;user id=root; password=lyx123456; database=coins; pooling=true; charset=utf8mb4";
+            string connectionString = AccountConfig.sqlConfig;//"server=localhost;port=3306;user id=root; password=lyx123456; database=coins; pooling=true; charset=utf8mb4";
             var connection = new MySqlConnection(connectionString);
             Database = new DapperConnection(connection);
 
@@ -46,7 +46,7 @@ namespace AutoXX
 
         public void SetHasSell(long id, string sellOrderResult, string sellAnalyze)
         {
-            if(sellAnalyze.Length > 4000)
+            if (sellAnalyze.Length > 4000)
             {
                 sellAnalyze = sellAnalyze.Substring(0, 4000);
             }

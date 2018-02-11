@@ -20,7 +20,9 @@ namespace AutoXX
         {
             XmlConfigurator.Configure(new FileInfo("log4net.config"));
             ILog logger = LogManager.GetLogger("program");
-            logger.Error("test test test");
+            logger.Error("-------------------------- 软件启动 ---------------------------------");
+
+            AccountConfig.init("yxq");
 
             //Test();
 

@@ -12,14 +12,13 @@ namespace AutoXX.Coin
     {
         static ILog logger = LogManager.GetLogger("BaseCoin");
 
-        public static string accountId = "1040955"; // yanxiuq
         private static AccountBalanceItem usdt;
-        //public static string accountId = "529880";  // lizhengq
 
         public static bool CheckBalance()
         {
             if(usdt == null)
             {
+                var accountId = AccountConfig.mainAccountId;
                 var accountInfo = new AccountOrder().AccountBalance(accountId);
                 usdt = accountInfo.data.list.Find(it => it.currency == "usdt");
             }
@@ -72,6 +71,7 @@ namespace AutoXX.Coin
 
         public static void BusinessRun(string coin, decimal buyAmount, decimal sellAmount)
         {
+            var accountId = AccountConfig.mainAccountId;
             // 获取最近行情
             decimal lastLow;
             decimal nowOpen;

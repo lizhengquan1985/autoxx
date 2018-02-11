@@ -14,6 +14,14 @@ namespace AutoXX
 {
     public class AccountOrder
     {
+        private string accessKey = ""; // yanxiuq
+        private string secretKey = "";
+
+        public AccountOrder()
+        {
+            accessKey = AccountConfig.accessKey;
+            secretKey = AccountConfig.secretKey;
+        }
 
         private const string domain = "api.huobi.pro";// "be.huobi.com";
         private string baseUrl = $"https://{domain}";
@@ -62,7 +70,7 @@ namespace AutoXX
             var url = $"{baseUrl}{action}?{ConvertQueryString(data, true)}";
             int statusCode;
             var result = RequestDataSync(url, method, null, null, out statusCode);
-            Debug.WriteLine(result);
+            //Console.WriteLine(result);
             return JsonConvert.DeserializeObject<AccountBalance>(result);
         }
 
