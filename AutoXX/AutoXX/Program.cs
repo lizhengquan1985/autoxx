@@ -2,6 +2,7 @@
 using log4net;
 using log4net.Config;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using SharpDapper;
 using System;
 using System.Collections.Generic;
@@ -44,27 +45,30 @@ namespace AutoXX
             var res = new AccountOrder().Accounts();
             Console.WriteLine(res);
             //Console.WriteLine(res.data.Count);
-            //while (true)
-            //{
-            //    Console.WriteLine("请输入 id：");
-            //    var id = Console.ReadLine();
-            //    var b = new AccountOrder().AccountBalance(id);
-            //    Console.WriteLine(b);
-            //}
-
             while (true)
             {
-                Console.WriteLine("请输入：");
-                var coin = Console.ReadLine();
-
-                decimal lastLow;
-                decimal nowOpen;
-                var flexPointList = new CoinAnalyze().Analyze(coin, "usdt", out lastLow, out nowOpen);
-                foreach (var flexPoint in flexPointList)
-                {
-                    Console.WriteLine($"{flexPoint.isHigh}, {flexPoint.open}, {Utils.GetDateById(flexPoint.id)}");
-                }
+                Console.WriteLine("请输入 id：");
+                var id = Console.ReadLine();
+                var b = new AccountOrder().AccountBalance(id);
+                b.data.list = b.data.list.Where(it => it.balance > 0).ToList();
+                var usdt = b.data.list.Find(it => it.currency == "usdt");
+                Console.WriteLine(JsonConvert.SerializeObject(b));
+                Console.WriteLine(JsonConvert.SerializeObject(usdt));
             }
+
+            //while (true)
+            //{
+            //    Console.WriteLine("请输入：");
+            //    var coin = Console.ReadLine();
+
+            //    decimal lastLow;
+            //    decimal nowOpen;
+            //    var flexPointList = new CoinAnalyze().Analyze(coin, "usdt", out lastLow, out nowOpen);
+            //    foreach (var flexPoint in flexPointList)
+            //    {
+            //        Console.WriteLine($"{flexPoint.isHigh}, {flexPoint.open}, {Utils.GetDateById(flexPoint.id)}");
+            //    }
+            //}
         }
 
         public static void Run()

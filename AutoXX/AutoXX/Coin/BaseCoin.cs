@@ -13,7 +13,23 @@ namespace AutoXX.Coin
         static ILog logger = LogManager.GetLogger("BaseCoin");
 
         public static string accountId = "1040955"; // yanxiuq
+        private static AccountBalanceItem usdt;
         //public static string accountId = "529880";  // lizhengq
+
+        public static bool CheckBalance()
+        {
+            if(usdt == null)
+            {
+                var accountInfo = new AccountOrder().AccountBalance(accountId);
+                usdt = accountInfo.data.list.Find(it => it.currency == "usdt");
+            }
+            if(usdt.balance < 1)
+            {
+                Console.WriteLine("---------------------余额小于1，无法交易----------------------------");
+                return false;
+            }
+            return true;
+        }
 
         public static bool CheckCanBuy(decimal nowOpen, decimal nearLowOpen)
         {
@@ -73,7 +89,7 @@ namespace AutoXX.Coin
             if (!flexPointList[0].isHigh)
             {
                 // 最后一次是高位
-                if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open))
+                if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open) && CheckBalance())
                 {
                     // 可以考虑
                     ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
@@ -90,6 +106,7 @@ namespace AutoXX.Coin
                             BuyOrderResult = JsonConvert.SerializeObject(order),
                             BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
                         });
+                        usdt = null;
                     }
                 }
 
@@ -106,7 +123,7 @@ namespace AutoXX.Coin
                     }
 
                     // 再少于5%， 
-                    if (nowOpen * (decimal)1.05 < minBuyPrice)
+                    if (nowOpen * (decimal)1.05 < minBuyPrice && CheckBalance())
                     {
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
                         logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
@@ -122,6 +139,7 @@ namespace AutoXX.Coin
                                 BuyOrderResult = JsonConvert.SerializeObject(order),
                                 BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
                             });
+                            usdt = null;
                         }
                     }
                 }
@@ -147,6 +165,7 @@ namespace AutoXX.Coin
                         logger.Error($"出售结果 coin{coin} accountId:{accountId}  出售数量{sellAmount} itemNowOpen{itemNowOpen} higher{higher} {JsonConvert.SerializeObject(order)}");
                         logger.Error($"出售结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         new CoinDao().SetHasSell(item.Id, JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(flexPointList));
+                        usdt = null;
                     }
                 }
             }
