@@ -40,7 +40,7 @@ namespace AutoXX
 
         public List<BuyRecord> ListNoSellRecord(string buyCoin)
         {
-            var sql = $"select * from t_buy_record where BuyCoin = '{buyCoin}' and HasSell=0";
+            var sql = $"select * from t_buy_record where BuyCoin = '{buyCoin}' and HasSell=0 and UserName='{AccountConfig.userName}'";
             return Database.Query<BuyRecord>(sql).ToList();
         }
 
@@ -81,5 +81,6 @@ namespace AutoXX
         public DateTime SellDate { get; set; }
         public decimal SellAmount { get; set; }
         public decimal BuyAmount { get; set; }
+        public string UserName { get; set; }
     }
 }

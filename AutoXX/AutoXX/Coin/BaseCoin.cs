@@ -82,6 +82,7 @@ namespace AutoXX.Coin
             }
             // 分析是否下跌， 下跌超过一定数据，可以考虑
             var list = new CoinDao().ListNoSellRecord(coin);
+            Console.WriteLine($"未售出{list.Count}");
             if (coin == "xem")
             {
                 //logger.Error(JsonConvert.SerializeObject(list));
@@ -105,7 +106,8 @@ namespace AutoXX.Coin
                             HasSell = false,
                             BuyOrderResult = JsonConvert.SerializeObject(order),
                             BuyAnalyze = JsonConvert.SerializeObject(flexPointList),
-                            BuyAmount = buyAmount
+                            BuyAmount = buyAmount,
+                            UserName = AccountConfig.userName
                         });
                         usdt = null;
                     }
@@ -138,7 +140,8 @@ namespace AutoXX.Coin
                                 BuyDate = DateTime.Now,
                                 HasSell = false,
                                 BuyOrderResult = JsonConvert.SerializeObject(order),
-                                BuyAnalyze = JsonConvert.SerializeObject(flexPointList)
+                                BuyAnalyze = JsonConvert.SerializeObject(flexPointList),
+                                UserName = AccountConfig.userName
                             });
                             usdt = null;
                         }
