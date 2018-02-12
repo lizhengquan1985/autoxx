@@ -93,11 +93,7 @@ namespace AutoXX.Coin
                 if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open))
                 {
                     // 可以考虑
-                    decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, 4);
-                    if(coin == "neo" || coin == "ven")
-                    {
-                        buyPrice = decimal.Round(nowOpen * (decimal)1.005, 2);
-                    }
+                    decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
                     ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
                     logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
                     logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
@@ -133,11 +129,7 @@ namespace AutoXX.Coin
                     // 再少于5%， 
                     if (nowOpen * (decimal)1.05 < minBuyPrice)
                     {
-                        decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, 4);
-                        if (coin == "neo" || coin == "ven")
-                        {
-                            buyPrice = decimal.Round(nowOpen * (decimal)1.005, 2);
-                        }
+                        decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
                         logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
                         logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
@@ -180,11 +172,7 @@ namespace AutoXX.Coin
                             sellAmount = item.BuyAmount * (decimal)0.98;
                         }
                         // 出售
-                        decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, 4);
-                        if (coin == "neo" || coin == "ven")
-                        {
-                            sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, 2);
-                        }
+                        decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, getPrecisionNumber(coin));
                         ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, sellPrice, null, coin, "usdt");
                         logger.Error($"出售结果 coin{coin} accountId:{accountId}  出售数量{sellAmount} itemNowOpen{itemNowOpen} higher{higher} {JsonConvert.SerializeObject(order)}");
                         logger.Error($"出售结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
@@ -193,6 +181,16 @@ namespace AutoXX.Coin
                     }
                 }
             }
+        }
+
+        public static int getPrecisionNumber(string coin)
+        {
+            if (coin == "btc" || coin == "bch" || coin == "eth" || coin == "etc" || coin == "ltc" || coin == "eos" || coin == "omg" || coin == "dash" || coin == "zec" || coin == "hsr"
+                 || coin == "qtum" || coin == "neo" || coin == "ven")
+            {
+                return 2;
+            }
+            return 4;
         }
     }
 }
