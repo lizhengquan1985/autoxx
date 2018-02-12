@@ -94,7 +94,7 @@ namespace AutoXX.Coin
                 {
                     // 可以考虑
                     decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, 4);
-                    if(coin == "neo")
+                    if(coin == "neo" || coin == "ven")
                     {
                         buyPrice = decimal.Round(nowOpen * (decimal)1.005, 2);
                     }
@@ -134,7 +134,7 @@ namespace AutoXX.Coin
                     if (nowOpen * (decimal)1.05 < minBuyPrice)
                     {
                         decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, 4);
-                        if (coin == "neo")
+                        if (coin == "neo" || coin == "ven")
                         {
                             buyPrice = decimal.Round(nowOpen * (decimal)1.005, 2);
                         }
@@ -181,7 +181,7 @@ namespace AutoXX.Coin
                         }
                         // 出售
                         decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, 4);
-                        if (coin == "neo")
+                        if (coin == "neo" || coin == "ven")
                         {
                             sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, 2);
                         }
