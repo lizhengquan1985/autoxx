@@ -65,6 +65,13 @@ namespace AutoXX
             {
                 Console.WriteLine("请输入：");
                 var coin = Console.ReadLine();
+                ResponseOrder order = new AccountOrder().NewOrderBuy(AccountConfig.mainAccountId, 1, (decimal)0.01, null, coin, "usdt");
+            }
+
+            while (true)
+            {
+                Console.WriteLine("请输入：");
+                var coin = Console.ReadLine();
 
                 decimal lastLow;
                 decimal nowOpen;

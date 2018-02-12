@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,6 +15,8 @@ namespace AutoXX
 {
     public class AccountOrder
     {
+        ILog logger = LogManager.GetLogger("AccountOrder");
+
         private string accessKey = ""; // yanxiuq
         private string secretKey = "";
 
@@ -137,8 +140,12 @@ namespace AutoXX
             int statusCode;
             var result = RequestDataSync(url, method, postData, null, out statusCode);
             //Debug.WriteLine(result);
-            Console.WriteLine($"下单买入结果：${result}");
-            return JsonConvert.DeserializeObject<ResponseOrder>(result);
+            var res = JsonConvert.DeserializeObject<ResponseOrder>(result);
+            if(res.status == "error")
+            {
+                logger.Error($"下单买入结果：{result}, {accountId},amount:{amount},price:{price},type:{type},coin:{coin},toCoin:{toCoin}");
+            }
+            return res;
         }
 
         public ResponseOrder NewOrderSell(string accountId, decimal amount, decimal price, string type, string coin, string toCoin)

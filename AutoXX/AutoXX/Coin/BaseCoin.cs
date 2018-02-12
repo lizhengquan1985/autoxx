@@ -141,7 +141,8 @@ namespace AutoXX.Coin
                                 HasSell = false,
                                 BuyOrderResult = JsonConvert.SerializeObject(order),
                                 BuyAnalyze = JsonConvert.SerializeObject(flexPointList),
-                                UserName = AccountConfig.userName
+                                UserName = AccountConfig.userName,
+                                BuyAmount = buyAmount
                             });
                             usdt = null;
                         }
