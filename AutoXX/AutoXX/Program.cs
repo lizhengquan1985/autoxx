@@ -95,6 +95,7 @@ namespace AutoXX
                     EOS.Do();
 
                     // 创新
+                    NAS.Do();
                     RUFF.Do();
                     ZIL.Do();
                     DTA.Do();

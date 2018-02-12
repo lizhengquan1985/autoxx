@@ -78,6 +78,7 @@
     <Compile Include="Coin\HT.cs" />
     <Compile Include="Coin\IOST.cs" />
     <Compile Include="Coin\LET.cs" />
+    <Compile Include="Coin\NAS.cs" />
     <Compile Include="Coin\NEO.cs" />
     <Compile Include="Coin\QTUM.cs" />
     <Compile Include="Coin\RUFF.cs" />
