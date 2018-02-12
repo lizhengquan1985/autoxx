@@ -170,6 +170,7 @@ namespace AutoXX.Coin
                         if (item.BuyAmount > (decimal)0.0001)
                         {
                             sellAmount = item.BuyAmount * (decimal)0.98;
+                            sellAmount = decimal.Round(sellAmount, getSellPrecisionNumber(coin));
                         }
                         // 出售
                         decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, getPrecisionNumber(coin));
@@ -190,6 +191,11 @@ namespace AutoXX.Coin
             {
                 return 2;
             }
+            return 4;
+        }
+
+        public static int getSellPrecisionNumber(string coin)
+        {
             return 4;
         }
     }
