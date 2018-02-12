@@ -180,7 +180,12 @@ namespace AutoXX.Coin
                             sellAmount = item.BuyAmount * (decimal)0.98;
                         }
                         // 出售
-                        ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, decimal.Round(itemNowOpen * (decimal)0.98, 4), null, coin, "usdt");
+                        decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, 4);
+                        if (coin == "neo")
+                        {
+                            sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, 2);
+                        }
+                        ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, sellPrice, null, coin, "usdt");
                         logger.Error($"出售结果 coin{coin} accountId:{accountId}  出售数量{sellAmount} itemNowOpen{itemNowOpen} higher{higher} {JsonConvert.SerializeObject(order)}");
                         logger.Error($"出售结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         new CoinDao().SetHasSell(item.Id, sellAmount, JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(flexPointList));
