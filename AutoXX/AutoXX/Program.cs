@@ -91,23 +91,31 @@ namespace AutoXX
 
                 try
                 {
-                    XEM.Do();
-                    SMT.Do();
-                    DTA.Do();
-                    ELF.Do();
+                    XRP.Do();
+                    EOS.Do();
+
+                    // 创新
+                    RUFF.Do();
                     ZIL.Do();
+                    DTA.Do();
                     LET.Do();
                     HT.Do();
+
                     THETA.Do();
+                    HSR.Do();
+                    QTUM.Do();
                     SNT.Do();
+                    IOST.Do();
+
+                    NEO.Do();
                     STORJ.Do();
                     GNT.Do();
                     CVC.Do();
-                    RUFF.Do();
+                    SMT.Do();
+
                     VEN.Do();
-                    IOST.Do();
-                    XRP.Do();
-                    //NEO.Do();
+                    ELF.Do();
+                    XEM.Do();
                 }
                 catch (Exception ex)
                 {

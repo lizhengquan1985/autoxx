@@ -93,7 +93,12 @@ namespace AutoXX.Coin
                 if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open))
                 {
                     // 可以考虑
-                    ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
+                    decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, 4);
+                    if(coin == "neo")
+                    {
+                        buyPrice = decimal.Round(nowOpen * (decimal)1.005, 2);
+                    }
+                    ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
                     logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
                     logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                     if (order.status != "error")
@@ -101,7 +106,7 @@ namespace AutoXX.Coin
                         new CoinDao().InsertLog(new BuyRecord()
                         {
                             BuyCoin = coin,
-                            BuyPrice = nowOpen * (decimal)1.005,
+                            BuyPrice = buyPrice,
                             BuyDate = DateTime.Now,
                             HasSell = false,
                             BuyOrderResult = JsonConvert.SerializeObject(order),
@@ -128,7 +133,12 @@ namespace AutoXX.Coin
                     // 再少于5%， 
                     if (nowOpen * (decimal)1.05 < minBuyPrice)
                     {
-                        ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, decimal.Round(nowOpen * (decimal)1.005, 4), null, coin, "usdt");
+                        decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, 4);
+                        if (coin == "neo")
+                        {
+                            buyPrice = decimal.Round(nowOpen * (decimal)1.005, 2);
+                        }
+                        ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
                         logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
                         logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         if (order.status != "error")
@@ -136,7 +146,7 @@ namespace AutoXX.Coin
                             new CoinDao().InsertLog(new BuyRecord()
                             {
                                 BuyCoin = coin,
-                                BuyPrice = nowOpen * (decimal)1.005,
+                                BuyPrice = buyPrice,
                                 BuyDate = DateTime.Now,
                                 HasSell = false,
                                 BuyOrderResult = JsonConvert.SerializeObject(order),

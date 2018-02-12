@@ -72,11 +72,14 @@
     <Compile Include="Coin\CVC.cs" />
     <Compile Include="Coin\DTA.cs" />
     <Compile Include="Coin\ELF.cs" />
+    <Compile Include="Coin\EOS.cs" />
     <Compile Include="Coin\GNT.cs" />
+    <Compile Include="Coin\HSR.cs" />
     <Compile Include="Coin\HT.cs" />
     <Compile Include="Coin\IOST.cs" />
     <Compile Include="Coin\LET.cs" />
     <Compile Include="Coin\NEO.cs" />
+    <Compile Include="Coin\QTUM.cs" />
     <Compile Include="Coin\RUFF.cs" />
     <Compile Include="Coin\SMT.cs" />
     <Compile Include="Coin\SNT.cs" />
