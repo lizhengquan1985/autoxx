@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AutoXX.Coin
 {
-    public class CVC : BaseCoin
+    public class OMG : BaseCoin
     {
-        public static string coin = "cvc";
-        public static decimal buyAmount = (decimal)5;
-        public static decimal sellAmount = (decimal)4.9;
+        public static string coin = "omg";
+        public static decimal buyAmount = (decimal)0.2;
+        public static decimal sellAmount = (decimal)0.196;
 
         public static void Do()
         {
