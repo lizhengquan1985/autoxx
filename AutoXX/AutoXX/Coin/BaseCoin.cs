@@ -76,7 +76,7 @@ namespace AutoXX.Coin
             decimal lastLow;
             decimal nowOpen;
             var flexPointList = new CoinAnalyze().Analyze(coin, "usdt", out lastLow, out nowOpen);
-            if(flexPointList.Count == 0)
+            if (flexPointList.Count == 0)
             {
                 logger.Error($"--------------> 分析结果数量为0 {coin}");
                 return;
@@ -200,6 +200,10 @@ namespace AutoXX.Coin
 
         public static int getSellPrecisionNumber(string coin)
         {
+            if (coin == "cvc" || coin == "ht")
+            {
+                return 2;
+            }
             return 4;
         }
     }

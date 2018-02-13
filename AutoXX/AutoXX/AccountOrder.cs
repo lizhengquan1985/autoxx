@@ -175,7 +175,12 @@ namespace AutoXX
             var result = RequestDataSync(url, method, postData, null, out statusCode);
             Console.WriteLine($"下单出售结果：${result}");
             //Debug.WriteLine(result);
-            return JsonConvert.DeserializeObject<ResponseOrder>(result);
+            var res = JsonConvert.DeserializeObject<ResponseOrder>(result);
+            if (res.status == "error")
+            {
+                logger.Error($"下单出售结果：{result}, {accountId},amount:{amount},price:{price},type:{type},coin:{coin},toCoin:{toCoin}");
+            }
+            return res;
         }
 
         public string PlaceOrder(string orderId)
