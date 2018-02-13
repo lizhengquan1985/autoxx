@@ -165,10 +165,6 @@ namespace AutoXX.Coin
                     // 分析是否 大于
                     decimal itemNowOpen = 0;
                     decimal higher = new CoinAnalyze().AnalyzeNeedSell(item.BuyPrice, item.BuyDate, coin, "usdt", out itemNowOpen);
-                    if (coin == "xem")
-                    {
-                        //logger.Error($"计算 {higher}, {itemNowOpen} {item.BuyPrice}");
-                    }
 
                     if (CheckCanSell(item.BuyPrice, higher, itemNowOpen))
                     {
@@ -182,7 +178,10 @@ namespace AutoXX.Coin
                         ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, sellPrice, null, coin, "usdt");
                         logger.Error($"出售结果 coin{coin} accountId:{accountId}  出售数量{sellAmount} itemNowOpen{itemNowOpen} higher{higher} {JsonConvert.SerializeObject(order)}");
                         logger.Error($"出售结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
-                        new CoinDao().SetHasSell(item.Id, sellAmount, JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(flexPointList));
+                        if (order.status != "error")
+                        {
+                            new CoinDao().SetHasSell(item.Id, sellAmount, JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(flexPointList));
+                        }
                         usdt = null;
                     }
                 }
