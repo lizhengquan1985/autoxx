@@ -76,6 +76,11 @@ namespace AutoXX.Coin
             decimal lastLow;
             decimal nowOpen;
             var flexPointList = new CoinAnalyze().Analyze(coin, "usdt", out lastLow, out nowOpen);
+            if(flexPointList.Count == 0)
+            {
+                logger.Error($"--------------> 分析结果数量为0 {coin}");
+                return;
+            }
             if (coin == "xem")
             {
                 //logger.Error(JsonConvert.SerializeObject(flexPointList));
@@ -187,7 +192,7 @@ namespace AutoXX.Coin
         public static int getPrecisionNumber(string coin)
         {
             if (coin == "btc" || coin == "bch" || coin == "eth" || coin == "etc" || coin == "ltc" || coin == "eos" || coin == "omg" || coin == "dash" || coin == "zec" || coin == "hsr"
-                 || coin == "qtum" || coin == "neo" || coin == "ven")
+                 || coin == "qtum" || coin == "neo" || coin == "ven" || coin == "nas")
             {
                 return 2;
             }

@@ -87,12 +87,14 @@ namespace AutoXX
         {
             while (true)
             {
-                Thread.Sleep(1000 * 20);
 
                 try
                 {
-                    XRP.Do();
+                    ETC.Do();
                     EOS.Do();
+                    XRP.Do();
+                    OMG.Do();
+                    Thread.Sleep(1000 * 5);
 
                     // 创新
                     NAS.Do();
@@ -100,23 +102,27 @@ namespace AutoXX
                     ZIL.Do();
                     DTA.Do();
                     LET.Do();
-                    HT.Do();
+                    Thread.Sleep(1000 * 5);
 
+                    HT.Do();
                     THETA.Do();
                     HSR.Do();
                     QTUM.Do();
                     SNT.Do();
-                    IOST.Do();
+                    Thread.Sleep(1000 * 5);
 
+                    IOST.Do();
                     NEO.Do();
                     STORJ.Do();
                     GNT.Do();
                     CVC.Do();
-                    SMT.Do();
+                    Thread.Sleep(1000 * 5);
 
+                    SMT.Do();
                     VEN.Do();
                     ELF.Do();
                     XEM.Do();
+                    Thread.Sleep(1000 * 5);
                 }
                 catch (Exception ex)
                 {
