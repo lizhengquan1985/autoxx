@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace AutoXX
     /// </summary>
     public class CoinAnalyze
     {
-
+        static ILog logger = LogManager.GetLogger("CoinAnalyze");
 
         /// <summary>
         /// 分析价位走势
@@ -137,86 +138,18 @@ namespace AutoXX
                     // 
                     foreach (var item in res.data)
                     {
-                        if(item.id < flexPointList[0].id && lastLow> item.open)
+                        if (item.id < flexPointList[0].id && lastLow > item.open)
                         {
                             lastLow = item.open;
                         }
                     }
                 }
 
-                //Console.WriteLine(flexPointList.Count);
-
-                //decimal lowGo = 0;
-                //decimal highGo = 0;
-                //int i = 0;
-                //foreach (var item in flexPointList)
-                //{
-                //    if (i < 8)
-                //    {
-                //        if (item.isHigh)
-                //        {
-                //            highGo += item.open;
-                //        }
-                //        else
-                //        {
-                //            lowGo += item.open;
-                //        }
-                //        i++;
-                //    }
-                //    Console.WriteLine($"{item.isHigh},  {item.open}，  {getdt(item.id)}");
-                //}
-
-                //Console.WriteLine(Math.Round(lowGo / 4, 8));
-                //Console.WriteLine(Math.Round(highGo / 4, 8));
-
-                try
-                {
-
-                    //if(buyPlus < sellPlus + 2 && buyPlus < 5) //res.data[0].open <= Math.Round(lowGo / 3, 8) * (decimal) 1.015
-                    //{
-                    //Console.WriteLine("买入： " + Math.Round(lowGo / 4, 8));
-                    //ResponseOrder order = new HuobiDemo().NewOrderBuy(accountId, 10050, Math.Round(lowGo / 4, 8), null);
-                    //if (order.status == "ok")
-                    //{
-                    //    Console.WriteLine("buy buy");
-                    //    buyId = order.data;
-                    //    buyPlus++;
-                    //}
-                    Console.WriteLine("buy buy over");
-                    //}
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("buy buy error");
-                }
-
-
-                try
-                {
-                    // 卖出高价
-
-                    //if (sellPlus < buyPlus + 2 && sellPlus<3) //res.data[0].open <= Math.Round(lowGo / 3, 8) * (decimal)1.015
-                    //{
-                    //    Console.WriteLine("卖出： " + Math.Round(highGo / 4, 8));
-                    //    ResponseOrder order = new HuobiDemo().NewOrderSell(accountId, 10000, Math.Round(highGo / 4, 8), null);
-                    //    if(order.status == "ok")
-                    //    {
-                    //        Console.WriteLine("sell sell");
-                    //        sellId = order.data;
-                    //        sellPlus++;
-                    //    }
-                    //    Console.WriteLine("sell sell over");
-                    //}
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("sell sell err");
-                }
                 return flexPointList;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("1111111111111111111111 over");
+                logger.Error(ex.Message, ex);
             }
             return new List<FlexPoint>();
         }
@@ -243,12 +176,12 @@ namespace AutoXX
                 int lastHighOrLow = 0; // 1 high, -1: low
                 foreach (var item in res.data)
                 {
-                    if(Utils.GetDateById(item.id) < compareDate)
+                    if (Utils.GetDateById(item.id) < compareDate)
                     {
                         continue;
                     }
 
-                     if(item.open > higher)
+                    if (item.open > higher)
                     {
                         higher = item.open;
                     }
