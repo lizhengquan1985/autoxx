@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class GNT : BaseCoin
     {
         public static string coin = "gnt";
-        public static decimal buyAmount = (decimal)8;
-        public static decimal sellAmount = (decimal)7.84;
+        public static decimal buyAmount = (decimal)10;
+        public static decimal sellAmount = (decimal)9.8;
 
         public static void Do()
         {

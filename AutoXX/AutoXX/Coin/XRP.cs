@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class XRP : BaseCoin
     {
         public static string coin = "xrp";
-        public static decimal buyAmount = (decimal)4;
-        public static decimal sellAmount = (decimal)3.92;
+        public static decimal buyAmount = (decimal)10;
+        public static decimal sellAmount = (decimal)9.8;
 
         public static void Do()
         {

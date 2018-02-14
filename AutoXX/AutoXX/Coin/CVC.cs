@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class CVC : BaseCoin
     {
         public static string coin = "cvc";
-        public static decimal buyAmount = (decimal)8;
-        public static decimal sellAmount = (decimal)7.84;
+        public static decimal buyAmount = (decimal)10;
+        public static decimal sellAmount = (decimal)9.8;
 
         public static void Do()
         {
