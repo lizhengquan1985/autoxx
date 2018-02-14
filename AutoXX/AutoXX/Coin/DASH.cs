@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class DASH : BaseCoin
     {
         public static string coin = "dash";
-        public static decimal buyAmount = (decimal)0.01;
-        public static decimal sellAmount = (decimal)0.0098;
+        public static decimal buyAmount = (decimal)0.02;
+        public static decimal sellAmount = (decimal)0.0196;
 
         public static void Do()
         {

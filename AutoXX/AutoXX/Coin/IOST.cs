@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class IOST : BaseCoin
     {
         public static string coin = "iost";
-        public static decimal buyAmount = (decimal)200;
-        public static decimal sellAmount = (decimal)196;
+        public static decimal buyAmount = (decimal)300;
+        public static decimal sellAmount = (decimal)294;
 
         public static void Do()
         {
