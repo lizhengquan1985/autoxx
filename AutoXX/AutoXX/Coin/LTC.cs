@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     class LTC : BaseCoin
     {
         public static string coin = "ltc";
-        public static decimal buyAmount = (decimal)0.03;
-        public static decimal sellAmount = (decimal)0.0294;
+        public static decimal buyAmount = (decimal)0.05;
+        public static decimal sellAmount = (decimal)0.049;
 
         public static void Do()
         {
