@@ -90,10 +90,16 @@ namespace AutoXX
 
                 try
                 {
+                    BCH.Do();
+                    ETH.Do();
                     ETC.Do();
+                    LTC.Do();
+
                     EOS.Do();
                     XRP.Do();
                     OMG.Do();
+                    DASH.Do();
+                    ZEC.Do();
                     Thread.Sleep(1000 * 5);
 
                     // 创新
