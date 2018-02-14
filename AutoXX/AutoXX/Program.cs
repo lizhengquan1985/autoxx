@@ -90,6 +90,7 @@ namespace AutoXX
 
                 try
                 {
+                    BTC.Do();
                     BCH.Do();
                     ETH.Do();
                     ETC.Do();
