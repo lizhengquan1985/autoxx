@@ -81,17 +81,11 @@ namespace AutoXX.Coin
                 logger.Error($"--------------> 分析结果数量为0 {coin}");
                 return;
             }
-            if (coin == "xem")
-            {
-                //logger.Error(JsonConvert.SerializeObject(flexPointList));
-            }
+
             // 分析是否下跌， 下跌超过一定数据，可以考虑
             var list = new CoinDao().ListNoSellRecord(coin);
             Console.WriteLine($"未售出{list.Count}");
-            if (coin == "xem")
-            {
-                //logger.Error(JsonConvert.SerializeObject(list));
-            }
+
             if (!flexPointList[0].isHigh && CheckBalance())
             {
                 // 最后一次是高位
