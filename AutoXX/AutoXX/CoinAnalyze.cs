@@ -33,11 +33,6 @@ namespace AutoXX
         /// <param name="toCoin"></param>
         public List<FlexPoint> Analyze(string coin, string toCoin, out decimal lastLow, out decimal nowOpen)
         {
-            int buyPlus = 0;
-            int sellPlus = 0;
-            string buyId = null;
-            string sellId = null;
-
             nowOpen = 0;
             lastLow = 999999999;
 
@@ -52,8 +47,6 @@ namespace AutoXX
 
                 List<FlexPoint> flexPointList = new List<FlexPoint>();
 
-                //List<decimal> high = new List<decimal>();
-                //List<decimal> low = new List<decimal>();
                 decimal openHigh = res.data[0].open;
                 decimal openLow = res.data[0].open;
                 long idHigh = 0;
