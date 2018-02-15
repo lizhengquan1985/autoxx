@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class NAS : BaseCoin
     {
         public static string coin = "nas";
-        public static decimal buyAmount = (decimal)1;
-        public static decimal sellAmount = (decimal)0.98;
+        public static decimal buyAmount = (decimal)2;
+        public static decimal sellAmount = (decimal)1.96;
 
         public static void Do()
         {

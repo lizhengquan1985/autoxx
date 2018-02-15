@@ -194,7 +194,7 @@ namespace AutoXX.Coin
 
         public static int getSellPrecisionNumber(string coin)
         {
-            if (coin == "cvc" || coin == "ht")
+            if (coin == "cvc" || coin == "ht" || coin == "xrp")
             {
                 return 2;
             }
