@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class QTUM : BaseCoin
     {
         public static string coin = "qtum";
-        public static decimal buyAmount = (decimal)0.3;
-        public static decimal sellAmount = (decimal)0.294;
+        public static decimal buyAmount = (decimal)0.2;
+        public static decimal sellAmount = (decimal)0.196;
 
         public static void Do()
         {
