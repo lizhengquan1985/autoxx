@@ -30,9 +30,9 @@ namespace AutoXX.Coin
                 Console.WriteLine($"--------------------- 余额{usdt.balance}----------------------------");
             }
 
-            if (usdt.balance < 3)
+            if (usdt.balance < 5)
             {
-                Console.WriteLine("---------------------余额小于1，无法交易----------------------------");
+                Console.WriteLine("---------------------余额小于5，无法交易----------------------------");
                 return false;
             }
             return true;
