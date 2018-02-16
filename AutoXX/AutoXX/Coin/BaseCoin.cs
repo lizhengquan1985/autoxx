@@ -11,18 +11,26 @@ namespace AutoXX.Coin
     public class BaseCoin
     {
         static ILog logger = LogManager.GetLogger("BaseCoin");
+        static int i = 0;
 
         private static AccountBalanceItem usdt;
 
         public static bool CheckBalance()
         {
+            i++;
             if (usdt == null)
             {
                 var accountId = AccountConfig.mainAccountId;
                 var accountInfo = new AccountOrder().AccountBalance(accountId);
                 usdt = accountInfo.data.list.Find(it => it.currency == "usdt");
             }
-            if (usdt.balance < 1)
+
+            if (usdt.balance < 6 && i % 100 == 0)
+            {
+                Console.WriteLine($"--------------------- 余额{usdt.balance}----------------------------");
+            }
+
+            if (usdt.balance < 3)
             {
                 Console.WriteLine("---------------------余额小于1，无法交易----------------------------");
                 return false;
