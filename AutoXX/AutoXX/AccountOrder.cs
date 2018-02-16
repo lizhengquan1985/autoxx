@@ -49,7 +49,7 @@ namespace AutoXX
             Console.WriteLine(url);
             var result = RequestDataSync(url, method, null, null, out statusCode);
             Console.WriteLine(result);
-            Console.WriteLine(statusCode);
+            //Console.WriteLine(statusCode);
             return JsonConvert.DeserializeObject<ResponseAccount>(result);
             //Debug.WriteLine(result);
         }

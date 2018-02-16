@@ -25,7 +25,7 @@ namespace AutoXX.Coin
                 usdt = accountInfo.data.list.Find(it => it.currency == "usdt");
             }
 
-            if (usdt.balance < 6 && i % 100 == 0)
+            if (usdt.balance < 10 && i % 100 == 0)
             {
                 Console.WriteLine($"--------------------- 余额{usdt.balance}----------------------------");
             }
@@ -102,8 +102,6 @@ namespace AutoXX.Coin
                     // 可以考虑
                     decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
                     ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
-                    logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
-                    logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                     if (order.status != "error")
                     {
                         new CoinDao().InsertLog(new BuyRecord()
@@ -118,6 +116,11 @@ namespace AutoXX.Coin
                             UserName = AccountConfig.userName
                         });
                         usdt = null;
+                    }
+                    else
+                    {
+                        logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
+                        logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                     }
                 }
 
@@ -138,8 +141,6 @@ namespace AutoXX.Coin
                     {
                         decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
-                        logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
-                        logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         if (order.status != "error")
                         {
                             new CoinDao().InsertLog(new BuyRecord()
@@ -154,6 +155,11 @@ namespace AutoXX.Coin
                                 BuyAmount = buyAmount
                             });
                             usdt = null;
+                        }
+                        else
+                        {
+                            logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
+                            logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         }
                     }
                 }
@@ -178,11 +184,14 @@ namespace AutoXX.Coin
                         // 出售
                         decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, getPrecisionNumber(coin));
                         ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, sellPrice, null, coin, "usdt");
-                        logger.Error($"出售结果 coin{coin} accountId:{accountId}  出售数量{sellAmount} itemNowOpen{itemNowOpen} higher{higher} {JsonConvert.SerializeObject(order)}");
-                        logger.Error($"出售结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         if (order.status != "error")
                         {
                             new CoinDao().SetHasSell(item.Id, sellAmount, JsonConvert.SerializeObject(order), JsonConvert.SerializeObject(flexPointList));
+                        }
+                        else
+                        {
+                            logger.Error($"出售结果 coin{coin} accountId:{accountId}  出售数量{sellAmount} itemNowOpen{itemNowOpen} higher{higher} {JsonConvert.SerializeObject(order)}");
+                            logger.Error($"出售结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         }
                         usdt = null;
                     }
