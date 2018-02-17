@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class ZIL : BaseCoin
     {
         public static string coin = "zil";
-        public static decimal buyAmount = (decimal)100;
-        public static decimal sellAmount = (decimal)98;
+        public static decimal buyAmount = (decimal)150;
+        public static decimal sellAmount = (decimal)147;
 
         public static void Do()
         {
