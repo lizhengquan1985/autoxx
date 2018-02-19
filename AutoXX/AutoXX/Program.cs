@@ -47,8 +47,8 @@ namespace AutoXX
             //Console.WriteLine(list.Count);
             //new CoinDao().SetHasSell(1);
 
-            var res = new AccountOrder().Accounts();
-            Console.WriteLine(res);
+            //var res = new AccountOrder().Accounts();
+            //Console.WriteLine(res);
             //Console.WriteLine(res.data.Count);
             //while (true)
             //{
@@ -61,12 +61,12 @@ namespace AutoXX
             //    Console.WriteLine(JsonConvert.SerializeObject(usdt));
             //}
 
-            while (true)
-            {
-                Console.WriteLine("请输入：");
-                var coin = Console.ReadLine();
-                ResponseOrder order = new AccountOrder().NewOrderBuy(AccountConfig.mainAccountId, 1, (decimal)0.01, null, coin, "usdt");
-            }
+            //while (true)
+            //{
+            //    Console.WriteLine("请输入：");
+            //    var coin = Console.ReadLine();
+            //    ResponseOrder order = new AccountOrder().NewOrderBuy(AccountConfig.mainAccountId, 1, (decimal)0.01, null, coin, "usdt");
+            //}
 
             while (true)
             {

@@ -137,7 +137,8 @@ namespace AutoXX.Coin
                     }
 
                     // 再少于5%， 
-                    if (nowOpen * (decimal)1.04 < minBuyPrice)
+                    decimal pecent = list.Count >= 2 ? (decimal)1.05 : (decimal)1.04;
+                    if (nowOpen * pecent < minBuyPrice)
                     {
                         decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
