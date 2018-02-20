@@ -65,7 +65,7 @@ namespace AutoXX
                         idLow = item.id;
                     }
 
-                    if (openHigh >= openLow * (decimal)1.035)
+                    if (openHigh >= openLow * (decimal)1.025)
                     {
                         var dtHigh = Utils.GetDateById(idHigh);
                         var dtLow = Utils.GetDateById(idLow);

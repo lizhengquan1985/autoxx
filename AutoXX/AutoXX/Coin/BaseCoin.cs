@@ -137,7 +137,7 @@ namespace AutoXX.Coin
                     }
 
                     // 再少于5%， 
-                    decimal pecent = list.Count >= 2 ? (decimal)1.05 : (decimal)1.04;
+                    decimal pecent = list.Count >= 3 ? (decimal)1.04 : (decimal)1.03;
                     if (nowOpen * pecent < minBuyPrice)
                     {
                         decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
