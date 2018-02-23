@@ -179,11 +179,11 @@ namespace AutoXX.Coin
                     {
                         if (item.BuyAmount > (decimal)0.0001)
                         {
-                            sellAmount = item.BuyAmount * (decimal)0.98;
+                            sellAmount = item.BuyAmount * (decimal)0.99;
                             sellAmount = decimal.Round(sellAmount, getSellPrecisionNumber(coin));
                         }
                         // 出售
-                        decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.98, getPrecisionNumber(coin));
+                        decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.985, getPrecisionNumber(coin));
                         ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, sellPrice, null, coin, "usdt");
                         if (order.status != "error")
                         {

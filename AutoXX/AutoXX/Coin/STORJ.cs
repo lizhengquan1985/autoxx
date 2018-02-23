@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class STORJ : BaseCoin
     {
         public static string coin = "storj";
-        public static decimal buyAmount = (decimal)5;
-        public static decimal sellAmount = (decimal)4.9;
+        public static decimal buyAmount = (decimal)7;
+        public static decimal sellAmount = (decimal)6.9;
 
         public static void Do()
         {

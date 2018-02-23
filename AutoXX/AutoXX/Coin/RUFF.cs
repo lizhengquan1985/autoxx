@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class RUFF : BaseCoin
     {
         public static string coin = "ruff";
-        public static decimal buyAmount = (decimal)50;
-        public static decimal sellAmount = (decimal)49;
+        public static decimal buyAmount = (decimal)60;
+        public static decimal sellAmount = (decimal)59;
 
         public static void Do()
         {

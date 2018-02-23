@@ -9,8 +9,8 @@ namespace AutoXX.Coin
     public class NEO : BaseCoin
     {
         public static string coin = "neo";
-        public static decimal buyAmount = (decimal)0.05;
-        public static decimal sellAmount = (decimal)0.049;
+        public static decimal buyAmount = (decimal)0.06;
+        public static decimal sellAmount = (decimal)0.059;
 
         public static void Do()
         {
