@@ -82,6 +82,7 @@
     <Compile Include="Coin\HSR.cs" />
     <Compile Include="Coin\HT.cs" />
     <Compile Include="Coin\IOST.cs" />
+    <Compile Include="Coin\ITC.cs" />
     <Compile Include="Coin\LET.cs" />
     <Compile Include="Coin\LTC.cs" />
     <Compile Include="Coin\NAS.cs" />
