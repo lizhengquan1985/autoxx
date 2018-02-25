@@ -51,7 +51,7 @@ namespace AutoXX.Coin
 
         public static decimal GetRecommendBuyAmount()
         {
-            if(noSellCount < 0)
+            if (noSellCount < 0)
             {
                 noSellCount = new CoinDao().GetAllNoSellRecordCount();
             }
@@ -63,7 +63,7 @@ namespace AutoXX.Coin
                 usdt = accountInfo.data.list.Find(it => it.currency == "usdt");
             }
 
-            if(noSellCount > 180)
+            if (noSellCount > 180)
             {
                 return usdt.balance / 60;
             }
@@ -127,13 +127,14 @@ namespace AutoXX.Coin
             var list = new CoinDao().ListNoSellRecord(coin);
             Console.WriteLine($"未售出{list.Count}");
 
-            if (!flexPointList[0].isHigh && CheckBalance())
+            decimal recommendAmount = GetRecommendBuyAmount();
+            if (!flexPointList[0].isHigh && CheckBalance() && recommendAmount > 5)
             {
                 // 最后一次是高位
                 if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open))
                 {
                     // 可以考虑
-                    decimal buyQuantity = GetRecommendBuyAmount() / nowOpen;
+                    decimal buyQuantity = recommendAmount / nowOpen;
                     buyQuantity = decimal.Round(buyQuantity, GetBuyQuantityPrecisionNumber(coin));
                     decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
                     ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyQuantity, buyPrice, null, coin, "usdt");
@@ -175,7 +176,7 @@ namespace AutoXX.Coin
                     decimal pecent = list.Count >= 15 ? (decimal)1.04 : (decimal)1.03;
                     if (nowOpen * pecent < minBuyPrice)
                     {
-                        decimal buyQuantity = GetRecommendBuyAmount() / nowOpen;
+                        decimal buyQuantity = recommendAmount / nowOpen;
                         buyQuantity = decimal.Round(buyQuantity, GetBuyQuantityPrecisionNumber(coin));
                         decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
                         ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyQuantity, buyPrice, null, coin, "usdt");
@@ -260,11 +261,11 @@ namespace AutoXX.Coin
         /// <returns></returns>
         public static int GetBuyQuantityPrecisionNumber(string coin)
         {
-            if(coin == "bch" || coin == "btc" || coin == "dash" || coin == "eth" || coin == "zec")
+            if (coin == "bch" || coin == "btc" || coin == "dash" || coin == "eth" || coin == "zec")
             {
                 return 4;
             }
-           
+
             return 2;
         }
     }
