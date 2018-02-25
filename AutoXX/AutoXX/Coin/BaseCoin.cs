@@ -11,8 +11,12 @@ namespace AutoXX.Coin
     /// <summary>
     /// 1.计算是否涨的比其它的都快很多,有个临界值, 则要注意.
     /// 2.如果跌的过多,比其它的都跌的过多,并且总体分为大跌和普通. 大胆购入
-    /// 3.如果历史最高,则跌4%,再购入
+    /// 3.如果历史最高,则跌4%,再购入    ********************************************************
     /// 4.如果历史最高,则跌4%,再购入(单项,少数), 如果全部历史最高,还是要考虑购入
+    /// 5.动态的价格数量出售, ********************************************************
+    /// 6.分阶段标数量,********************************************************
+    /// 7.过高价位低调购入?,
+    /// 8.可视化收益,手术费------?????
     /// </summary>
     public class BaseCoin
     {
@@ -20,6 +24,7 @@ namespace AutoXX.Coin
         static int i = 0;
 
         private static AccountBalanceItem usdt;
+        private static int noSellCount = -1;
 
         public static bool CheckBalance()
         {
@@ -42,6 +47,29 @@ namespace AutoXX.Coin
                 return false;
             }
             return true;
+        }
+
+        public static decimal GetRecommendBuyAmount()
+        {
+            if(noSellCount < 0)
+            {
+                noSellCount = new CoinDao().GetAllNoSellRecordCount();
+            }
+
+            if (usdt == null)
+            {
+                var accountId = AccountConfig.mainAccountId;
+                var accountInfo = new AccountOrder().AccountBalance(accountId);
+                usdt = accountInfo.data.list.Find(it => it.currency == "usdt");
+            }
+
+            if(noSellCount > 180)
+            {
+                return usdt.balance / 60;
+            }
+
+            // 让每个承受8轮
+            return usdt.balance / (240 - noSellCount);
         }
 
         public static bool CheckCanBuy(decimal nowOpen, decimal nearLowOpen)
@@ -74,7 +102,7 @@ namespace AutoXX.Coin
         {
             try
             {
-                BusinessRun(coin, buyAmount);
+                BusinessRun(coin);
             }
             catch (Exception ex)
             {
@@ -82,7 +110,7 @@ namespace AutoXX.Coin
             }
         }
 
-        public static void BusinessRun(string coin, decimal buyAmount)
+        public static void BusinessRun(string coin)
         {
             var accountId = AccountConfig.mainAccountId;
             // 获取最近行情
@@ -105,8 +133,10 @@ namespace AutoXX.Coin
                 if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open))
                 {
                     // 可以考虑
+                    decimal buyQuantity = GetRecommendBuyAmount() / nowOpen;
+                    buyQuantity = decimal.Round(buyQuantity, GetBuyQuantityPrecisionNumber(coin));
                     decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
-                    ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
+                    ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyQuantity, buyPrice, null, coin, "usdt");
                     if (order.status != "error")
                     {
                         new CoinDao().InsertLog(new BuyRecord()
@@ -117,14 +147,14 @@ namespace AutoXX.Coin
                             HasSell = false,
                             BuyOrderResult = JsonConvert.SerializeObject(order),
                             BuyAnalyze = JsonConvert.SerializeObject(flexPointList),
-                            BuyAmount = buyAmount,
+                            BuyAmount = buyQuantity,
                             UserName = AccountConfig.userName
                         });
                         usdt = null;
                     }
                     else
                     {
-                        logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
+                        logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyQuantity} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
                         logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                     }
                 }
@@ -145,8 +175,10 @@ namespace AutoXX.Coin
                     decimal pecent = list.Count >= 15 ? (decimal)1.04 : (decimal)1.03;
                     if (nowOpen * pecent < minBuyPrice)
                     {
+                        decimal buyQuantity = GetRecommendBuyAmount() / nowOpen;
+                        buyQuantity = decimal.Round(buyQuantity, GetBuyQuantityPrecisionNumber(coin));
                         decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
-                        ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyAmount, buyPrice, null, coin, "usdt");
+                        ResponseOrder order = new AccountOrder().NewOrderBuy(accountId, buyQuantity, buyPrice, null, coin, "usdt");
                         if (order.status != "error")
                         {
                             new CoinDao().InsertLog(new BuyRecord()
@@ -158,13 +190,13 @@ namespace AutoXX.Coin
                                 BuyOrderResult = JsonConvert.SerializeObject(order),
                                 BuyAnalyze = JsonConvert.SerializeObject(flexPointList),
                                 UserName = AccountConfig.userName,
-                                BuyAmount = buyAmount
+                                BuyAmount = buyQuantity
                             });
                             usdt = null;
                         }
                         else
                         {
-                            logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyAmount} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
+                            logger.Error($"下单结果 coin{coin} accountId:{accountId}  购买数量{buyQuantity} nowOpen{nowOpen} {JsonConvert.SerializeObject(order)}");
                             logger.Error($"下单结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         }
                     }
@@ -219,6 +251,21 @@ namespace AutoXX.Coin
                 return 2;
             }
             return 4;
+        }
+
+        /// <summary>
+        /// 获取购买数量的精度
+        /// </summary>
+        /// <param name="coin"></param>
+        /// <returns></returns>
+        public static int GetBuyQuantityPrecisionNumber(string coin)
+        {
+            if(coin == "bch" || coin == "btc" || coin == "dash" || coin == "eth" || coin == "zec")
+            {
+                return 4;
+            }
+           
+            return 2;
         }
     }
 }

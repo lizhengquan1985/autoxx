@@ -44,6 +44,12 @@ namespace AutoXX
             return Database.Query<BuyRecord>(sql).ToList();
         }
 
+        public int GetAllNoSellRecordCount()
+        {
+            var sql = $"select count(1) from t_buy_record where HasSell=0 and UserName='{AccountConfig.userName}'";
+            return Database.Query<int>(sql).FirstOrDefault();
+        }
+
         public void SetHasSell(long id, decimal sellAmount, string sellOrderResult, string sellAnalyze)
         {
             if (sellAnalyze.Length > 4000)
