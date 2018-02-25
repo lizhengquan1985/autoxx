@@ -50,8 +50,8 @@ namespace AutoXX
 
                 decimal openHigh = res.data[0].open;
                 decimal openLow = res.data[0].open;
-                long idHigh = 0;
-                long idLow = 0;
+                long idHigh = res.data[0].id;
+                long idLow = res.data[0].id;
                 int lastHighOrLow = 0; // 1 high, -1: low
                 foreach (var item in res.data)
                 {
@@ -89,42 +89,7 @@ namespace AutoXX
                         {
 
                         }
-                        //Console.WriteLine($"{dtHigh}, {openHigh}");
-                        //Console.WriteLine($"{dtLow}, {openLow}");
                     }
-
-                    //if (openHigh >= openLow * (decimal)1.02)
-                    //{
-                    //    // 相差了2%， 说明是一个节点了。
-                    //    if ((flexPointList.Count == 0 && idHigh > idLow) || (flexPointList.Count > 0 && !flexPointList[flexPointList.Count - 1].isHigh))
-                    //    {
-                    //        if (flexPointList.Count > 0 && flexPointList[flexPointList.Count - 1].isHigh && flexPointList[flexPointList.Count - 1].open < openHigh)
-                    //        {
-                    //            flexPointList[flexPointList.Count - 1].open = openHigh;
-                    //            flexPointList[flexPointList.Count - 1].id = idHigh;
-                    //        }
-                    //        else
-                    //        {
-                    //            flexPointList.Add(new FlexPoint() { isHigh = true, open = openHigh, id = idHigh });
-                    //            openHigh = openLow;
-                    //            idHigh = idLow;
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        if (flexPointList.Count > 0 && !flexPointList[flexPointList.Count - 1].isHigh && flexPointList[flexPointList.Count - 1].open > openLow)
-                    //        {
-                    //            flexPointList[flexPointList.Count - 1].open = openLow;
-                    //            flexPointList[flexPointList.Count - 1].id = idLow;
-                    //        }
-                    //        else
-                    //        {
-                    //            flexPointList.Add(new FlexPoint() { isHigh = false, open = openLow, id = idLow });
-                    //            openLow = openHigh;
-                    //            idLow = idHigh;
-                    //        }
-                    //    }
-                    //}
                 }
 
                 if (flexPointList[0].isHigh)
@@ -139,9 +104,9 @@ namespace AutoXX
                     }
                 }
 
-                if(flexPointList.Count < 2)
+                if(flexPointList.Count < 0)
                 {
-                    logger.Error("--------------------------------------");
+                    logger.Error($"--------------{idHigh}------{idLow}------------------");
                     logger.Error(JsonConvert.SerializeObject(flexPointList));
                     logger.Error(JsonConvert.SerializeObject(res.data));
                 }
