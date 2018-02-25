@@ -262,9 +262,14 @@ namespace AutoXX.Coin
         /// <returns></returns>
         public static int GetBuyQuantityPrecisionNumber(string coin)
         {
-            if (coin == "bch" || coin == "btc" || coin == "dash" || coin == "eth" || coin == "zec")
+            if (coin == "btc")
             {
                 return 4;
+            }
+
+            if (coin == "bch" || coin == "dash" || coin == "eth" || coin == "zec")
+            {
+                return 3;
             }
 
             return 2;
