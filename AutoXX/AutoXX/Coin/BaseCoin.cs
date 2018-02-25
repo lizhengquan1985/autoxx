@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace AutoXX.Coin
 {
+    /// <summary>
+    /// 1.计算是否涨的比其它的都快很多,有个临界值, 则要注意.
+    /// 2.如果跌的过多,比其它的都跌的过多,并且总体分为大跌和普通. 大胆购入
+    /// 3.如果历史最高,则跌4%,再购入
+    /// 4.如果历史最高,则跌4%,再购入(单项,少数), 如果全部历史最高,还是要考虑购入
+    /// </summary>
     public class BaseCoin
     {
         static ILog logger = LogManager.GetLogger("BaseCoin");

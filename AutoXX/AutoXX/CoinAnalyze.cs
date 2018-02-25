@@ -1,4 +1,5 @@
 ﻿using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,6 +137,13 @@ namespace AutoXX
                             lastLow = item.open;
                         }
                     }
+                }
+
+                if(flexPointList.Count < 2)
+                {
+                    logger.Error("--------------------------------------");
+                    logger.Error(JsonConvert.SerializeObject(flexPointList));
+                    logger.Error(JsonConvert.SerializeObject(res.data));
                 }
 
                 return flexPointList;
