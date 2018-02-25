@@ -10,11 +10,10 @@ namespace AutoXX.Coin
     {
         public static string coin = "btc";
         public static decimal buyAmount = (decimal)0.005;
-        public static decimal sellAmount = (decimal)0.0049;
 
         public static void Do()
         {
-            BaseRun(coin, buyAmount, sellAmount);
+            BaseRun(coin, buyAmount);
         }
     }
 }

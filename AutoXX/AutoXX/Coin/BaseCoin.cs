@@ -64,12 +64,11 @@ namespace AutoXX.Coin
             // buyPrice * (decimal)1.05 < nearHigherOpen && 
         }
 
-
-        public static void BaseRun(string coin, decimal buyAmount, decimal sellAmount)
+        public static void BaseRun(string coin, decimal buyAmount)
         {
             try
             {
-                BusinessRun(coin, buyAmount, sellAmount);
+                BusinessRun(coin, buyAmount);
             }
             catch (Exception ex)
             {
@@ -77,7 +76,7 @@ namespace AutoXX.Coin
             }
         }
 
-        public static void BusinessRun(string coin, decimal buyAmount, decimal sellAmount)
+        public static void BusinessRun(string coin, decimal buyAmount)
         {
             var accountId = AccountConfig.mainAccountId;
             // 获取最近行情
@@ -137,7 +136,7 @@ namespace AutoXX.Coin
                     }
 
                     // 再少于5%， 
-                    decimal pecent = list.Count >= 5 ? (decimal)1.04 : (decimal)1.03;
+                    decimal pecent = list.Count >= 15 ? (decimal)1.04 : (decimal)1.03;
                     if (nowOpen * pecent < minBuyPrice)
                     {
                         decimal buyPrice = decimal.Round(nowOpen * (decimal)1.005, getPrecisionNumber(coin));
@@ -177,11 +176,8 @@ namespace AutoXX.Coin
 
                     if (CheckCanSell(item.BuyPrice, higher, itemNowOpen))
                     {
-                        if (item.BuyAmount > (decimal)0.0001)
-                        {
-                            sellAmount = item.BuyAmount * (decimal)0.99;
-                            sellAmount = decimal.Round(sellAmount, getSellPrecisionNumber(coin));
-                        }
+                        decimal sellAmount = item.BuyAmount * (decimal)0.99;
+                        sellAmount = decimal.Round(sellAmount, getSellPrecisionNumber(coin));
                         // 出售
                         decimal sellPrice = decimal.Round(itemNowOpen * (decimal)0.985, getPrecisionNumber(coin));
                         ResponseOrder order = new AccountOrder().NewOrderSell(accountId, sellAmount, sellPrice, null, coin, "usdt");
