@@ -173,7 +173,7 @@ namespace AutoXX.Coin
                     }
 
                     // 再少于5%， 
-                    decimal pecent = list.Count >= 15 ? (decimal)1.04 : (decimal)1.03;
+                    decimal pecent = list.Count >= 15 ? (decimal)1.03 : (decimal)1.025;
                     if (nowOpen * pecent < minBuyPrice)
                     {
                         decimal buyQuantity = recommendAmount / nowOpen;
