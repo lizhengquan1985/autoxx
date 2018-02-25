@@ -104,27 +104,28 @@ namespace AutoXX
                     Thread.Sleep(1000 * 5);
 
                     // 创新
+                    ITC.Do();
                     NAS.Do();
                     RUFF.Do();
                     ZIL.Do();
                     DTA.Do();
-                    LET.Do();
                     Thread.Sleep(1000 * 5);
 
+                    LET.Do();
                     HT.Do();
                     THETA.Do();
                     HSR.Do();
                     QTUM.Do();
-                    SNT.Do();
                     Thread.Sleep(1000 * 5);
 
+                    SNT.Do();
                     IOST.Do();
                     NEO.Do();
                     STORJ.Do();
                     GNT.Do();
-                    CVC.Do();
                     Thread.Sleep(1000 * 5);
 
+                    CVC.Do();
                     SMT.Do();
                     VEN.Do();
                     ELF.Do();

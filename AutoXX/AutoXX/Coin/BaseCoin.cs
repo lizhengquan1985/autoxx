@@ -128,7 +128,8 @@ namespace AutoXX.Coin
             Console.WriteLine($"未售出{list.Count}");
 
             decimal recommendAmount = GetRecommendBuyAmount();
-            if (!flexPointList[0].isHigh && CheckBalance() && recommendAmount > 5)
+            Console.Write($"------------>{recommendAmount}");
+            if (!flexPointList[0].isHigh && CheckBalance() && recommendAmount > 2)
             {
                 // 最后一次是高位
                 if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open))
