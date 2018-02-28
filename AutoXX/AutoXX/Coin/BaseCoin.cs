@@ -72,6 +72,12 @@ namespace AutoXX.Coin
             return usdt.balance / (240 - noSellCount);
         }
 
+        public static void ClearData()
+        {
+            usdt = null;
+            noSellCount = -1;
+        }
+
         public static bool CheckCanBuy(decimal nowOpen, decimal nearLowOpen)
         {
             //nowOpen > flexPointList[0].open * (decimal)1.005 && nowOpen < flexPointList[0].open * (decimal)1.01
@@ -129,7 +135,7 @@ namespace AutoXX.Coin
 
             decimal recommendAmount = GetRecommendBuyAmount();
             Console.Write($"------------>{recommendAmount}");
-            if (!flexPointList[0].isHigh && CheckBalance() && recommendAmount > 2)
+            if (false && !flexPointList[0].isHigh && CheckBalance() && recommendAmount > 2)
             {
                 // 最后一次是高位
                 if (list.Count <= 0 && CheckCanBuy(nowOpen, flexPointList[0].open))
@@ -152,7 +158,7 @@ namespace AutoXX.Coin
                             BuyAmount = buyQuantity,
                             UserName = AccountConfig.userName
                         });
-                        usdt = null;
+                        ClearData();
                     }
                     else
                     {
@@ -195,6 +201,7 @@ namespace AutoXX.Coin
                                 BuyAmount = buyQuantity
                             });
                             usdt = null;
+                            noSellCount = -1;
                         }
                         else
                         {
@@ -231,6 +238,7 @@ namespace AutoXX.Coin
                             logger.Error($"出售结果 分析 {JsonConvert.SerializeObject(flexPointList)}");
                         }
                         usdt = null;
+                        noSellCount = -1;
                     }
                 }
             }
